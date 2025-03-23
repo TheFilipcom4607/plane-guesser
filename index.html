@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Aircraft Recognition Game</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; background: #f7f9fc; }
+        img { max-width: 500px; margin-top: 20px; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; font-size: 16px; }
+        #feedback { margin-top: 15px; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <h1>✈️ Aircraft Recognition Game</h1>
+    <select id="difficulty" onchange="newRound()">
+        <option value="easy">Easy (Airbus or Boeing)</option>
+        <option value="normal">Normal (Aircraft Family)</option>
+        <option value="hard">Hard (Exact Model)</option>
+    </select>
+    <div id="game">
+        <img id="aircraft-img" src="" alt="Aircraft">
+        <div id="choices"></div>
+        <div id="feedback"></div>
+        <button onclick="newRound()">🔄 Next Aircraft</button>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
