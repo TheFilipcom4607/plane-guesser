@@ -3,26 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <title>Aircraft Recognition Game</title>
+    <link rel="stylesheet" href="https://assets.thefilip.com/style.css">
     <style>
-        body { font-family: sans-serif; text-align: center; background: #f7f9fc; }
-        img { max-width: 500px; margin-top: 20px; }
-        button { padding: 10px 20px; margin: 5px; cursor: pointer; font-size: 16px; }
-        #feedback { margin-top: 15px; font-size: 18px; }
+        body { text-align: center; }
+        img { max-width: 500px; margin: 20px auto; }
+        button { cursor: pointer; }
     </style>
 </head>
 <body>
     <h1>✈️ Aircraft Recognition Game</h1>
-    <select id="difficulty" onchange="newRound()">
-        <option value="easy">Easy (Airbus or Boeing)</option>
-        <option value="normal">Normal (Aircraft Family)</option>
-        <option value="hard">Hard (Exact Model)</option>
-    </select>
-    <div id="game">
+    <div id="start-screen">
+        <p>Test your ability to recognize aircraft!</p>
+        <select id="difficulty-select">
+            <option value="easy">🟢 Easy (Airbus/Boeing)</option>
+            <option value="normal">🟠 Normal (Aircraft Family)</option>
+            <option value="hard">🔴 Hard (Exact Model)</option>
+        </select>
+        <br><br>
+        <button onclick="startGame()">▶️ Start Game</button>
+    </div>
+
+    <div id="game-screen" style="display:none;">
+        <div>Score: <span id="score">0</span>/<span id="total">0</span></div>
         <img id="aircraft-img" src="" alt="Aircraft">
         <div id="choices"></div>
         <div id="feedback"></div>
-        <button onclick="newRound()">🔄 Next Aircraft</button>
+        <br>
+        <button onclick="nextRound()">🔄 Next Aircraft</button>
+        <button onclick="resetGame()">🏠 Restart</button>
     </div>
+
     <script src="game.js"></script>
 </body>
 </html>
