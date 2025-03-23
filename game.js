@@ -4,10 +4,15 @@ let difficulty;
 let score = 0;
 let total = 0;
 
+// Load aircraft data first
 fetch("aircraft-data.json")
   .then(res => res.json())
-  .then(json => data = json);
+  .then(json => {
+    data = json;
+    document.querySelector('button[onclick="startGame()"]').disabled = false;
+  });
 
+// Initialize the game
 function startGame() {
   difficulty = document.getElementById("difficulty-select").value;
   document.getElementById("start-screen").style.display = "none";
@@ -23,8 +28,8 @@ function nextRound() {
   currentAircraft = data[Math.floor(Math.random() * data.length)];
   document.getElementById("aircraft-img").src = currentAircraft.image;
 
-  let correctAnswer = getCorrectAnswer();
-  let answers = generateAnswers(correctAnswer);
+  const correctAnswer = getCorrectAnswer();
+  const answers = generateAnswers(correctAnswer);
 
   displayChoices(answers, correctAnswer);
 }
