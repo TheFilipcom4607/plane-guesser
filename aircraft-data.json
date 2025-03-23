@@ -1,0 +1,38 @@
+[
+  {
+    "manufacturer": "Airbus",
+    "family": "A320",
+    "model": "A320-200",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/AIRBUS_A320.png/600px-AIRBUS_A320.png"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A330",
+    "model": "A330-300",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Airbus_A330-300.png/600px-Airbus_A330-300.png"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A380",
+    "model": "A380-800",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/A380Silh.png/600px-A380Silh.png"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "737",
+    "model": "737-800",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Boeing_737-800_silhouette.svg/600px-Boeing_737-800_silhouette.svg.png"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "747",
+    "model": "747-400",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/B747-400.png/600px-B747-400.png"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "787",
+    "model": "787-9",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Boeing787Silhouette.png/600px-Boeing787Silhouette.png"
+  }
+]
