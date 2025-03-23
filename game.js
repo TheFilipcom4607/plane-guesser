@@ -1,24 +1,41 @@
 let data = [];
 let currentAircraft;
+let difficulty;
+let score = 0;
+let total = 0;
 
 fetch("aircraft-data.json")
   .then(res => res.json())
-  .then(json => {
-    data = json;
-    newRound();
-  });
+  .then(json => data = json);
 
-function newRound() {
+function startGame() {
+  difficulty = document.getElementById("difficulty-select").value;
+  document.getElementById("start-screen").style.display = "none";
+  document.getElementById("game-screen").style.display = "block";
+  score = 0;
+  total = 0;
+  updateScore();
+  nextRound();
+}
+
+function nextRound() {
   document.getElementById("feedback").innerText = "";
-  const difficulty = document.getElementById("difficulty").value;
   currentAircraft = data[Math.floor(Math.random() * data.length)];
   document.getElementById("aircraft-img").src = currentAircraft.image;
 
-  let correctAnswer;
-  if (difficulty === "easy") correctAnswer = currentAircraft.manufacturer;
-  else if (difficulty === "normal") correctAnswer = currentAircraft.family;
-  else correctAnswer = currentAircraft.model;
+  let correctAnswer = getCorrectAnswer();
+  let answers = generateAnswers(correctAnswer);
 
+  displayChoices(answers, correctAnswer);
+}
+
+function getCorrectAnswer() {
+  if (difficulty === "easy") return currentAircraft.manufacturer;
+  if (difficulty === "normal") return currentAircraft.family;
+  return currentAircraft.model;
+}
+
+function generateAnswers(correctAnswer) {
   let answers = data.map(ac => {
     if (difficulty === "easy") return ac.manufacturer;
     if (difficulty === "normal") return ac.family;
@@ -30,7 +47,10 @@ function newRound() {
   answers = answers.slice(0, 3);
   answers.push(correctAnswer);
   shuffleArray(answers);
+  return answers;
+}
 
+function displayChoices(answers, correctAnswer) {
   const choicesDiv = document.getElementById("choices");
   choicesDiv.innerHTML = "";
   answers.forEach(choice => {
@@ -42,12 +62,25 @@ function newRound() {
 }
 
 function checkAnswer(choice, correctAnswer) {
+  total++;
   const feedback = document.getElementById("feedback");
   if (choice === correctAnswer) {
     feedback.innerText = "✅ Correct!";
+    score++;
   } else {
-    feedback.innerText = `❌ Wrong! Correct answer: ${correctAnswer}`;
+    feedback.innerText = `❌ Wrong! It's ${correctAnswer}`;
   }
+  updateScore();
+}
+
+function updateScore() {
+  document.getElementById("score").innerText = score;
+  document.getElementById("total").innerText = total;
+}
+
+function resetGame() {
+  document.getElementById("game-screen").style.display = "none";
+  document.getElementById("start-screen").style.display = "block";
 }
 
 function shuffleArray(array) {
