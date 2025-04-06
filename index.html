@@ -4,8 +4,11 @@
   <meta charset="UTF-8" />
   <title>PlaneGuessr</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- External CSS -->
   <link rel="stylesheet" href="https://assets.thefilip.com/style.css" />
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Override external body max-width so full centering works -->
   <style>
     body {
       max-width: 100% !important;
@@ -18,17 +21,19 @@
   </style>
 </head>
 <body class="bg-[#121212] text-[#eaeaea] h-screen flex flex-col">
-  <main class="flex-grow flex flex-col items-center justify-center w-full px-4">
-    <div class="text-center max-w-md w-full mx-auto">
-      <h1 class="text-5xl font-bold mb-2">PlaneGuessr</h1>
-      <p class="mb-6">A simple game to test your ability to recognize aircraft!</p>
-      <select id="difficulty-select" class="px-3 py-2 mb-4 border border-[#eaeaea] bg-[#121212] text-[#eaeaea] rounded cursor-pointer focus:outline-none appearance-none text-lg">
-        <option value="easy">🟢 Easy (Airbus/Boeing)</option>
-        <option value="normal">🟠 Normal (Aircraft Family)</option>
-        <option value="hard">🔴 Hard (Exact Model)</option>
-      </select>
-      <br />
-      <button onclick="startGame()" disabled>▶️ Start Game</button>
+  <main class="flex-grow flex items-center justify-center w-full px-4">
+    <div class="text-center w-full max-w-md mx-auto">
+      <div id="start-screen">
+        <h1 class="text-5xl font-bold mb-2">PlaneGuessr</h1>
+        <p class="mb-6">A simple game to test your ability to recognize aircraft!</p>
+        <select id="difficulty-select" class="px-3 py-2 mb-4 border border-[#eaeaea] bg-[#121212] text-[#eaeaea] rounded cursor-pointer focus:outline-none appearance-none text-lg">
+          <option value="easy">🟢 Easy (Airbus/Boeing)</option>
+          <option value="normal">🟠 Normal (Aircraft Family)</option>
+          <option value="hard">🔴 Hard (Exact Model)</option>
+        </select>
+        <br />
+        <button onclick="startGame()" disabled>▶️ Start Game</button>
+      </div>
       <div id="game-screen" style="display:none;" class="mt-8">
         <div>Score: <span id="score">0</span>/<span id="total">0</span></div>
         <img id="aircraft-img" src="" alt="Aircraft" class="mx-auto my-4" />
@@ -50,6 +55,104 @@
       <a href="https://github.com/TheFilipcom4607" class="hover:underline text-[#40E0D0]">TheFilip</a>
     </p>
   </footer>
-  <script src="game.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      let data = [];
+      let currentAircraft;
+      let difficulty;
+      let score = 0;
+      let total = 0;
+
+      fetch("aircraft-data.json")
+        .then(res => res.json())
+        .then(json => {
+          data = json;
+          document.querySelector('button[onclick="startGame()"]').disabled = false;
+        })
+        .catch(error => console.error("Error loading JSON:", error));
+
+      window.startGame = function() {
+        document.getElementById("start-screen").style.display = "none";
+        document.getElementById("game-screen").style.display = "block";
+        difficulty = document.getElementById("difficulty-select").value;
+        score = 0;
+        total = 0;
+        updateScore();
+        nextRound();
+      };
+
+      function nextRound() {
+        document.getElementById("feedback").innerText = "";
+        currentAircraft = data[Math.floor(Math.random() * data.length)];
+        document.getElementById("aircraft-img").src = currentAircraft.image;
+        const correctAnswer = getCorrectAnswer();
+        const answers = generateAnswers(correctAnswer);
+        displayChoices(answers, correctAnswer);
+      }
+
+      function getCorrectAnswer() {
+        if (difficulty === "easy") return currentAircraft.manufacturer;
+        if (difficulty === "normal") return currentAircraft.family;
+        return currentAircraft.model;
+      }
+
+      function generateAnswers(correctAnswer) {
+        let answers = data.map(ac => {
+          if (difficulty === "easy") return ac.manufacturer;
+          if (difficulty === "normal") return ac.family;
+          return ac.model;
+        });
+        answers = [...new Set(answers.filter(a => a !== correctAnswer))];
+        shuffleArray(answers);
+        answers = answers.slice(0, 3);
+        answers.push(correctAnswer);
+        shuffleArray(answers);
+        return answers;
+      }
+
+      function displayChoices(answers, correctAnswer) {
+        const choicesDiv = document.getElementById("choices");
+        choicesDiv.innerHTML = "";
+        answers.forEach(choice => {
+          const btn = document.createElement("button");
+          btn.innerText = choice;
+          btn.onclick = () => checkAnswer(choice, correctAnswer);
+          choicesDiv.appendChild(btn);
+        });
+      }
+
+      function checkAnswer(choice, correctAnswer) {
+        total++;
+        const feedback = document.getElementById("feedback");
+        if (choice === correctAnswer) {
+          feedback.innerText = "✅ Correct!";
+          score++;
+          updateScore();
+          setTimeout(nextRound, 700);
+        } else {
+          feedback.innerText = `❌ Wrong! It's ${correctAnswer}`;
+          updateScore();
+          setTimeout(nextRound, 2000);
+        }
+      }
+
+      function updateScore() {
+        document.getElementById("score").innerText = score;
+        document.getElementById("total").innerText = total;
+      }
+
+      window.resetGame = function() {
+        document.getElementById("game-screen").style.display = "none";
+        document.getElementById("start-screen").style.display = "block";
+      };
+
+      function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          let j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+    });
+  </script>
 </body>
 </html>
