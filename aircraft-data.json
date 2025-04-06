@@ -34,5 +34,29 @@
     "family": "787",
     "model": "787-9",
     "image": "images/787-9.png"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A350",
+    "model": "A350-900",
+    "image": "images/A350-900.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "777",
+    "model": "777-300ER",
+    "image": "images/777-300ER.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A220",
+    "model": "A220-300",
+    "image": "images/A220-300.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "767",
+    "model": "767-300",
+    "image": "images/767-300.jpg"
   }
 ]
