@@ -10,6 +10,7 @@
       margin: 0;
       display: flex;
       flex-direction: column;
+      align-items: center;         /* ✅ Center content horizontally */
     }
 
     main {
@@ -17,14 +18,14 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      width: 100%;
     }
 
     .game-wrapper {
-      width: 100%;
       max-width: 700px;
+      width: 100%;
       text-align: center;
-      margin: 0 auto;
+      padding: 20px;
     }
 
     img {
@@ -35,6 +36,7 @@
     footer {
       padding: 20px;
       text-align: center;
+      width: 100%;
     }
 
     button {
@@ -69,13 +71,17 @@
     </div>
   </main>
 
-  <footer>
-    <hr />
-    <p class="center">
-      Made with <span class="heart">❤️</span> by
-      <a href="https://github.com/TheFilipcom4607" class="footer-link">TheFilip</a>
-    </p>
-  </footer>
+<footer>
+  <hr />
+  <p class="center">
+    <a href="https://github.com/TheFilipcom4607/planeguessr" class="footer-link">📂 GitHub</a> •
+    <a href="https://projects.thefilip.com/planeguessr" class="footer-link">📄 Writeup</a>
+  </p>
+  <p class="center">
+    Made with <span class="heart">❤️</span> by
+    <a href="https://github.com/TheFilipcom4607" class="footer-link">TheFilip</a>
+  </p>
+</footer>
 
   <script src="game.js"></script>
 </body>
