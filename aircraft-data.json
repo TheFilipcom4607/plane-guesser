@@ -1,51 +1,9 @@
 [
   {
     "manufacturer": "Airbus",
-    "family": "A320",
-    "model": "A320-200",
-    "image": "images/A320-200.png"
-  },
-  {
-    "manufacturer": "Airbus",
-    "family": "A330",
-    "model": "A330-300",
-    "image": "images/A330-300.png"
-  },
-  {
-    "manufacturer": "Airbus",
-    "family": "A380",
-    "model": "A380-800",
-    "image": "images/A380-800.png"
-  },
-  {
-    "manufacturer": "Boeing",
-    "family": "737",
-    "model": "737-800",
-    "image": "images/737-800.png"
-  },
-  {
-    "manufacturer": "Boeing",
-    "family": "747",
-    "model": "747-400",
-    "image": "images/747-400.png"
-  },
-  {
-    "manufacturer": "Boeing",
-    "family": "787",
-    "model": "787-9",
-    "image": "images/787-9.png"
-  },
-  {
-    "manufacturer": "Airbus",
-    "family": "A350",
-    "model": "A350-900",
-    "image": "images/A350-900.jpg"
-  },
-  {
-    "manufacturer": "Boeing",
-    "family": "777",
-    "model": "777-300ER",
-    "image": "images/777-300ER.jpg"
+    "family": "A220",
+    "model": "A220-100",
+    "image": "images/A220-100.jpg"
   },
   {
     "manufacturer": "Airbus",
@@ -54,9 +12,165 @@
     "image": "images/A220-300.jpg"
   },
   {
+    "manufacturer": "Airbus",
+    "family": "A300",
+    "model": "A300",
+    "image": "images/A300-600.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A310",
+    "model": "A310",
+    "image": "images/A310-300.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A318",
+    "model": "A318",
+    "image": "images/A318-100.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A319",
+    "model": "A319",
+    "image": "images/A319-100.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A320",
+    "model": "A320",
+    "image": "images/A320-200.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A321",
+    "model": "A321neo",
+    "image": "images/A321neo.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A330",
+    "model": "A330-200",
+    "image": "images/A330-200.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A330",
+    "model": "A330-300",
+    "image": "images/A330-300.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A340",
+    "model": "A340-300",
+    "image": "images/A340-300.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A340",
+    "model": "A340-600",
+    "image": "images/A340-600.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A350",
+    "model": "A350-900",
+    "image": "images/A350-900.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A350",
+    "model": "A350-1000",
+    "image": "images/A350-1000.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A380",
+    "model": "A380",
+    "image": "images/A380-800.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "707",
+    "model": "707",
+    "image": "images/707-320.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "717",
+    "model": "717",
+    "image": "images/717-200.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "727",
+    "model": "727",
+    "image": "images/727-200.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "737",
+    "model": "737-200",
+    "image": "images/737-200.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "737",
+    "model": "737-800",
+    "image": "images/737-800.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "737",
+    "model": "737 MAX 8",
+    "image": "images/737 MAX 8.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "747",
+    "model": "747-400",
+    "image": "images/747-400.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "747",
+    "model": "747-8",
+    "image": "images/747-8.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "757",
+    "model": "757",
+    "image": "images/757-200.jpg"
+  },
+  {
     "manufacturer": "Boeing",
     "family": "767",
-    "model": "767-300",
+    "model": "767",
     "image": "images/767-300.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "777",
+    "model": "777-200LR",
+    "image": "images/777-200LR.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "777",
+    "model": "777-300ER",
+    "image": "images/777-300ER.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "787",
+    "model": "787-8",
+    "image": "images/787-8.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "787",
+    "model": "787-9",
+    "image": "images/787-9.jpg"
   }
 ]
