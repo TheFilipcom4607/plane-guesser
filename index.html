@@ -21,18 +21,16 @@
     button {
       cursor: pointer;
     }
-
-    #game-screen button {
-      margin-top: 1rem;
-    }
   </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between items-center px-4">
+<body class="min-h-screen flex flex-col">
 
-  <main class="flex-grow flex items-center justify-center w-full">
-    <div class="text-center max-w-md w-full mx-auto">
-      <h1 class="text-3xl font-bold mb-2">PlaneGuessr</h1>
+  <!-- Centered game content -->
+  <main class="flex-grow flex items-center justify-center">
+    <div class="text-center w-full max-w-md px-6">
+      <h1 class="text-3xl font-bold mb-2 border-b border-gray-700 inline-block pb-1">PlaneGuessr</h1>
       <p class="mb-6">A simple game to test your ability to recognize aircraft!</p>
+
       <select id="difficulty-select" class="mb-4">
         <option value="easy">🟢 Easy (Airbus/Boeing)</option>
         <option value="normal">🟠 Normal (Aircraft Family)</option>
@@ -43,7 +41,7 @@
 
       <div id="game-screen" style="display:none;" class="mt-8">
         <div>Score: <span id="score">0</span>/<span id="total">0</span></div>
-        <img id="aircraft-img" src="" alt="Aircraft" />
+        <img id="aircraft-img" src="" alt="Aircraft" class="mx-auto my-4" />
         <div id="choices"></div>
         <div id="feedback" class="my-2"></div>
         <button onclick="resetGame()">❌ Restart</button>
@@ -51,6 +49,7 @@
     </div>
   </main>
 
+  <!-- Footer -->
   <footer class="text-center text-sm text-gray-400 py-6 w-full">
     <hr class="my-6 border-gray-700 max-w-xs mx-auto" />
     <div class="space-x-2">
