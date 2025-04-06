@@ -12,36 +12,37 @@
       margin: 0 !important;
       padding: 0 !important;
     }
-    button, select {
-      margin-top: 0 !important;
-    }
   </style>
 </head>
 <body class="bg-[#121212] text-[#eaeaea] min-h-screen flex flex-col">
-  <main class="flex-grow flex items-center justify-center w-full px-4">
-    <div class="bg-gray-800 p-8 rounded-lg shadow-lg text-center w-full max-w-md mx-auto">
-      <h1 class="text-5xl font-bold mb-4">PlaneGuessr</h1>
-      <p class="mb-6">Test your ability to recognize aircraft!</p>
+  <main class="flex-grow flex items-center justify-center px-4">
+    <div class="w-full max-w-md text-center space-y-6">
+
       <div id="start-screen">
-        <select id="difficulty-select" class="mb-4 px-3 py-2 border border-[#eaeaea] bg-[#121212] text-[#eaeaea] rounded appearance-none text-lg">
+        <h1 class="text-5xl font-bold mb-2">PlaneGuessr</h1>
+        <p class="mb-6">A simple game to test your ability to recognize aircraft!</p>
+        <select id="difficulty-select" class="px-3 py-2 border border-[#eaeaea] bg-[#121212] text-[#eaeaea] rounded text-base">
           <option value="easy">🟢 Easy (Airbus/Boeing)</option>
           <option value="normal">🟠 Normal (Aircraft Family)</option>
           <option value="hard">🔴 Hard (Exact Model)</option>
         </select>
         <br>
-        <button onclick="startGame()" disabled class="px-4 py-2 bg-[#121212] text-[#eaeaea] border border-[#eaeaea] rounded hover:bg-[#eaeaea] hover:text-[#121212] transition">▶️ Start Game</button>
+        <button onclick="startGame()" disabled class="mt-4 px-4 py-2 border rounded hover:bg-[#eaeaea] hover:text-[#121212] transition">▶️ Start Game</button>
       </div>
-      <div id="game-screen" class="hidden mt-6">
-        <div class="mb-2">Score: <span id="score">0</span>/<span id="total">0</span></div>
-        <img id="aircraft-img" src="" alt="Aircraft" class="mx-auto my-4">
-        <div id="choices" class="mb-2"></div>
-        <div id="feedback" class="mb-4"></div>
-        <button onclick="resetGame()" class="px-4 py-2 bg-[#121212] text-[#eaeaea] border border-[#eaeaea] rounded hover:bg-[#eaeaea] hover:text-[#121212] transition">❌ Restart</button>
+
+      <div id="game-screen" style="display:none;">
+        <div class="text-sm text-gray-300 mb-2">Score: <span id="score">0</span>/<span id="total">0</span></div>
+        <img id="aircraft-img" src="" alt="Aircraft" class="mx-auto mb-4 max-w-full h-auto rounded shadow-lg" />
+        <div id="choices" class="space-y-2"></div>
+        <div id="feedback" class="mt-2 text-lg font-semibold"></div>
+        <button onclick="resetGame()" class="mt-6 px-4 py-2 border rounded hover:bg-[#eaeaea] hover:text-[#121212] transition">❌ Restart</button>
       </div>
+
     </div>
   </main>
-  <footer class="w-full text-center text-sm text-gray-400 py-6">
-    <hr class="my-6 border-gray-700 max-w-xs mx-auto">
+
+  <footer class="text-center text-sm text-gray-400 py-6">
+    <hr class="my-6 border-gray-700 max-w-xs mx-auto" />
     <div class="space-x-2">
       <a href="https://github.com/TheFilipcom4607/planeguessr" class="hover:underline text-[#40E0D0]">📂 GitHub</a>
       <span>•</span>
@@ -52,6 +53,7 @@
       <a href="https://github.com/TheFilipcom4607" class="hover:underline text-[#40E0D0]">TheFilip</a>
     </p>
   </footer>
+
   <script src="game.js"></script>
 </body>
 </html>
