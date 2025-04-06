@@ -26,12 +26,11 @@ function startGame() {
 function nextRound() {
   document.getElementById("feedback").innerText = "";
   currentAircraft = data[Math.floor(Math.random() * data.length)];
-
-  // ✅ Use exact image path from JSON
   document.getElementById("aircraft-img").src = currentAircraft.image;
 
   const correctAnswer = getCorrectAnswer();
   const answers = generateAnswers(correctAnswer);
+
   displayChoices(answers, correctAnswer);
 }
 
@@ -73,10 +72,13 @@ function checkAnswer(choice, correctAnswer) {
   if (choice === correctAnswer) {
     feedback.innerText = "✅ Correct!";
     score++;
+    updateScore();
+    setTimeout(nextRound, 700); // Quick transition on correct guess
   } else {
-    feedback.innerText = `❌ Wrong! It's ${correctAnswer}`;
+    feedback.innerText = `❌ Wrong! It was ${correctAnswer}`;
+    updateScore();
+    setTimeout(nextRound, 2000); // Delay longer for user to read
   }
-  updateScore();
 }
 
 function updateScore() {
