@@ -4,27 +4,25 @@
   <meta charset="UTF-8" />
   <title>PlaneGuessr</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- External CSS -->
   <link rel="stylesheet" href="https://assets.thefilip.com/style.css" />
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Override external CSS to allow full-width centering -->
   <style>
     body {
       max-width: 100% !important;
       margin: 0 !important;
       padding: 0 !important;
     }
+    button, select {
+      margin-top: 0 !important;
+    }
   </style>
 </head>
 <body class="bg-[#121212] text-[#eaeaea] h-screen flex flex-col">
-
-  <!-- Main content centered vertically and horizontally -->
-  <main class="flex-grow flex items-center justify-center w-full">
-    <div class="text-center w-full max-w-md px-6 mx-auto">
-      <h1 class="text-3xl font-bold mb-2">PlaneGuessr</h1>
+  <main class="flex-grow flex flex-col items-center justify-center w-full px-4">
+    <div class="text-center max-w-md w-full mx-auto">
+      <h1 class="text-5xl font-bold mb-2">PlaneGuessr</h1>
       <p class="mb-6">A simple game to test your ability to recognize aircraft!</p>
-      <select id="difficulty-select" class="mb-4">
+      <select id="difficulty-select" class="px-3 py-2 mb-4 border border-[#eaeaea] bg-[#121212] text-[#eaeaea] rounded cursor-pointer focus:outline-none appearance-none text-lg">
         <option value="easy">🟢 Easy (Airbus/Boeing)</option>
         <option value="normal">🟠 Normal (Aircraft Family)</option>
         <option value="hard">🔴 Hard (Exact Model)</option>
@@ -40,8 +38,6 @@
       </div>
     </div>
   </main>
-
-  <!-- Footer -->
   <footer class="w-full text-center text-sm text-gray-400 py-6">
     <hr class="my-6 border-gray-700 max-w-xs mx-auto" />
     <div class="space-x-2">
@@ -54,7 +50,6 @@
       <a href="https://github.com/TheFilipcom4607" class="hover:underline text-[#40E0D0]">TheFilip</a>
     </p>
   </footer>
-
   <script src="game.js"></script>
 </body>
 </html>
