@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let score = 0;
   let total = 0;
   let highScore = localStorage.getItem("planeguessrHighScore") || 0;
+  let usedAircraft = [];
+
   document.getElementById("high-score").innerText = highScore;
 
   fetch("aircraft-data.json")
@@ -22,6 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
     difficulty = document.getElementById("difficulty-select").value;
     score = 0;
     total = 0;
+    usedAircraft = [];
     updateScore();
     nextRound();
   };
@@ -29,10 +32,20 @@ document.addEventListener("DOMContentLoaded", () => {
   function nextRound() {
     document.getElementById("feedback").innerText = "";
 
+    if (usedAircraft.length === data.length) {
+      document.getElementById("feedback").innerText = "You’ve seen all aircraft!";
+      return;
+    }
+
     do {
       currentAircraft = data[Math.floor(Math.random() * data.length)];
-    } while (currentAircraft === lastAircraft);
+    } while (
+      currentAircraft === lastAircraft ||
+      usedAircraft.includes(currentAircraft.model)
+    );
+
     lastAircraft = currentAircraft;
+    usedAircraft.push(currentAircraft.model);
 
     const imageUrl = `${currentAircraft.image}?t=${Date.now()}`;
     const oldImg = document.getElementById("aircraft-img");
@@ -40,13 +53,11 @@ document.addEventListener("DOMContentLoaded", () => {
     newImg.src = imageUrl;
     newImg.alt = "Aircraft";
     newImg.id = "aircraft-img";
-    newImg.className = oldImg.className.replace("loaded", ""); // remove previous loaded
+    newImg.className = oldImg.className.replace("loaded", "");
     newImg.onload = () => {
-      newImg.classList.add("loaded"); // fade in when loaded
+      newImg.classList.add("loaded");
     };
     oldImg.replaceWith(newImg);
-
-    console.log("Next Aircraft:", currentAircraft.model, "→", imageUrl);
 
     const correctAnswer = getCorrectAnswer();
     const answers = generateAnswers(correctAnswer);
@@ -86,24 +97,17 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function checkAnswer(choice, correctAnswer) {
-    console.log("Clicked:", choice, "| Correct:", correctAnswer);
     total++;
     const feedback = document.getElementById("feedback");
     if (choice === correctAnswer) {
       feedback.innerText = "✅ Correct!";
       score++;
       updateScore();
-      setTimeout(() => {
-        console.log("→ Next round (correct)");
-        nextRound();
-      }, 700);
+      setTimeout(nextRound, 700);
     } else {
       feedback.innerText = `❌ Wrong! It's ${correctAnswer}`;
       updateScore();
-      setTimeout(() => {
-        console.log("→ Next round (wrong)");
-        nextRound();
-      }, 2000);
+      setTimeout(nextRound, 2000);
     }
   }
 
