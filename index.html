@@ -1,42 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Aircraft Recognition Game</title>
-    <link rel="stylesheet" href="https://assets.thefilip.com/style.css">
-    <style>
-        body { text-align: center; }
-        img { max-width: 500px; margin: 20px auto; }
-        button { cursor: pointer; }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Aircraft Recognition Game</title>
+  <link rel="stylesheet" href="https://assets.thefilip.com/style.css" />
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+    }
+
+    .page-content {
+      flex: 1;
+      padding: 20px;
+    }
+
+    img {
+      max-width: 500px;
+      margin: 20px auto;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    footer {
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
+  <div class="page-content">
     <h1>PlaneGuessr</h1>
+
     <div id="start-screen">
-        <p>A simple game to test your ability to recognize aircraft!</p>
-        <select id="difficulty-select">
-            <option value="easy">🟢 Easy (Airbus/Boeing)</option>
-            <option value="normal">🟠 Normal (Aircraft Family)</option>
-            <option value="hard">🔴 Hard (Exact Model)</option>
-        </select>
-        <br><br>
-        <button onclick="startGame()" disabled>▶️ Start Game</button>
+      <p>A simple game to test your ability to recognize aircraft!</p>
+      <select id="difficulty-select">
+        <option value="easy">🟢 Easy (Airbus/Boeing)</option>
+        <option value="normal">🟠 Normal (Aircraft Family)</option>
+        <option value="hard">🔴 Hard (Exact Model)</option>
+      </select>
+      <br><br>
+      <button onclick="startGame()" disabled>▶️ Start Game</button>
     </div>
 
     <div id="game-screen" style="display:none;">
-        <div>Score: <span id="score">0</span>/<span id="total">0</span></div>
-        <img id="aircraft-img" src="" alt="Aircraft">
-        <div id="choices"></div>
-        <div id="feedback"></div>
-        <br>
-        <button onclick="resetGame()">❌ Restart</button>
+      <div>Score: <span id="score">0</span>/<span id="total">0</span></div>
+      <img id="aircraft-img" src="" alt="Aircraft" />
+      <div id="choices"></div>
+      <div id="feedback"></div>
+      <br>
+      <button onclick="resetGame()">❌ Restart</button>
     </div>
+  </div>
 
-    <script src="game.js"></script>
+  <footer>
+    <hr />
+    <p class="center">
+      Made with <span class="heart">❤️</span> by
+      <a href="https://github.com/TheFilipcom4607" class="footer-link">TheFilip</a>
+    </p>
+  </footer>
 
-    <footer>
-        <hr>
-        <p class="center">Made with <span class="heart">❤️</span> by <a href="https://github.com/TheFilipcom4607" class="footer-link">TheFilip</a></p>
-    </footer>
+  <script src="game.js"></script>
 </body>
 </html>
