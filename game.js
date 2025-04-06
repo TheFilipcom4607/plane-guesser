@@ -36,6 +36,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const imageUrl = `${currentAircraft.image}?t=${Date.now()}`;
     const oldImg = document.getElementById("aircraft-img");
     const newImg = oldImg.cloneNode();
+    newImg.onload = () => {
+      newImg.classList.add("loaded");
+    };
     newImg.src = imageUrl;
     newImg.alt = "Aircraft";
     newImg.id = "aircraft-img";
