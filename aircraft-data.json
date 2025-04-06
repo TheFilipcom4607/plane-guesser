@@ -152,14 +152,14 @@
   {
     "manufacturer": "Boeing",
     "family": "777",
-    "model": "777-200LR",
-    "image": "images/777-200LR.jpg"
+    "model": "777-200",
+    "image": "images/777-200.jpg"
   },
   {
     "manufacturer": "Boeing",
     "family": "777",
-    "model": "777-300ER",
-    "image": "images/777-300ER.jpg"
+    "model": "777-300",
+    "image": "images/777-300.jpg"
   },
   {
     "manufacturer": "Boeing",
