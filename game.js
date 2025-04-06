@@ -4,7 +4,6 @@ let difficulty;
 let score = 0;
 let total = 0;
 
-// Load aircraft data first
 fetch("aircraft-data.json")
   .then(res => res.json())
   .then(json => {
@@ -12,7 +11,6 @@ fetch("aircraft-data.json")
     document.querySelector('button[onclick="startGame()"]').disabled = false;
   });
 
-// Initialize the game
 function startGame() {
   difficulty = document.getElementById("difficulty-select").value;
   document.getElementById("start-screen").style.display = "none";
@@ -27,10 +25,8 @@ function nextRound() {
   document.getElementById("feedback").innerText = "";
   currentAircraft = data[Math.floor(Math.random() * data.length)];
   document.getElementById("aircraft-img").src = currentAircraft.image;
-
   const correctAnswer = getCorrectAnswer();
   const answers = generateAnswers(correctAnswer);
-
   displayChoices(answers, correctAnswer);
 }
 
@@ -46,7 +42,6 @@ function generateAnswers(correctAnswer) {
     if (difficulty === "normal") return ac.family;
     return ac.model;
   });
-
   answers = [...new Set(answers.filter(a => a !== correctAnswer))];
   shuffleArray(answers);
   answers = answers.slice(0, 3);
@@ -73,11 +68,11 @@ function checkAnswer(choice, correctAnswer) {
     feedback.innerText = "✅ Correct!";
     score++;
     updateScore();
-    setTimeout(nextRound, 700); // Quick transition on correct guess
+    setTimeout(nextRound, 700);
   } else {
-    feedback.innerText = `❌ Wrong! It was ${correctAnswer}`;
+    feedback.innerText = `❌ Wrong! It's ${correctAnswer}`;
     updateScore();
-    setTimeout(nextRound, 2000); // Delay longer for user to read
+    setTimeout(nextRound, 2000);
   }
 }
 
