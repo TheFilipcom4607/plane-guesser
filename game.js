@@ -5,6 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let difficulty;
   let score = 0;
   let total = 0;
+  let highScore = localStorage.getItem("planeguessrHighScore") || 0;
+  document.getElementById("high-score").innerText = highScore;
 
   fetch("aircraft-data.json")
     .then(res => res.json())
@@ -27,7 +29,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function nextRound() {
     document.getElementById("feedback").innerText = "";
 
-    // Pick a different aircraft than last round
     do {
       currentAircraft = data[Math.floor(Math.random() * data.length)];
     } while (currentAircraft === lastAircraft);
@@ -36,13 +37,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const imageUrl = `${currentAircraft.image}?t=${Date.now()}`;
     const oldImg = document.getElementById("aircraft-img");
     const newImg = oldImg.cloneNode();
-    newImg.onload = () => {
-      newImg.classList.add("loaded");
-    };
     newImg.src = imageUrl;
     newImg.alt = "Aircraft";
     newImg.id = "aircraft-img";
-    newImg.className = oldImg.className;
+    newImg.className = oldImg.className.replace("loaded", ""); // remove previous loaded
+    newImg.onload = () => {
+      newImg.classList.add("loaded"); // fade in when loaded
+    };
     oldImg.replaceWith(newImg);
 
     console.log("Next Aircraft:", currentAircraft.model, "→", imageUrl);
@@ -109,6 +110,12 @@ document.addEventListener("DOMContentLoaded", () => {
   function updateScore() {
     document.getElementById("score").innerText = score;
     document.getElementById("total").innerText = total;
+
+    if (score > highScore) {
+      highScore = score;
+      localStorage.setItem("planeguessrHighScore", highScore);
+      document.getElementById("high-score").innerText = highScore;
+    }
   }
 
   window.resetGame = function () {
