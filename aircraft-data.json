@@ -3,13 +3,13 @@
     "manufacturer": "Airbus",
     "family": "A320",
     "model": "A320-200",
-    "image": "images/a320-200.jpg"
+    "image": "images/A320-200.jpg"
   },
   {
     "manufacturer": "Airbus",
     "family": "A330",
     "model": "A330-300",
-    "image": "images/a330-300.png"
+    "image": "images/A330-300.png"
   },
   {
     "manufacturer": "Airbus",
