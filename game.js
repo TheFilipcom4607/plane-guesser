@@ -26,7 +26,15 @@ function startGame() {
 function nextRound() {
   document.getElementById("feedback").innerText = "";
   currentAircraft = data[Math.floor(Math.random() * data.length)];
-  document.getElementById("aircraft-img").src = currentAircraft.image.replace(".png", ".jpg");
+
+  // Load aircraft image with fallback from .jpg to .png
+  const imgElement = document.getElementById("aircraft-img");
+  const basePath = currentAircraft.image.replace(/\.png$/, ""); // remove .png if present
+  imgElement.onerror = () => {
+    imgElement.onerror = null; // prevent infinite loop
+    imgElement.src = `${basePath}.png`;
+  };
+  imgElement.src = `${basePath}.jpg`;
 
   const correctAnswer = getCorrectAnswer();
   const answers = generateAnswers(correctAnswer);
