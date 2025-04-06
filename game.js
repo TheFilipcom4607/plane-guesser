@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("feedback").innerText = "";
 
     if (usedAircraft.length === data.length) {
-      document.getElementById("feedback").innerText = "You’ve seen all aircraft!";
+      document.getElementById("feedback").innerText = "You’ve seen all aircraft! More will be added soon. GG";
       return;
     }
 
