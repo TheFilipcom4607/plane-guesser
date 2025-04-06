@@ -12,6 +12,15 @@
       margin: 0 !important;
       padding: 0 !important;
     }
+
+    #aircraft-img {
+      opacity: 0;
+      transition: opacity 0.5s ease-in-out;
+    }
+
+    #aircraft-img.loaded {
+      opacity: 1;
+    }
   </style>
 </head>
 <body class="bg-[#121212] text-[#eaeaea] min-h-screen flex flex-col text-lg">
