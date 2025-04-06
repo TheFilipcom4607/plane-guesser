@@ -5,21 +5,109 @@
     <title>Aircraft Recognition Game</title>
     <link rel="stylesheet" href="https://assets.thefilip.com/style.css">
     <style>
-        body { text-align: center; }
-        img { max-width: 500px; margin: 20px auto; }
-        button { cursor: pointer; }
+        body {
+            margin: 0;
+            height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #f4f4f4;
+        }
+
+        #start-screen {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        #start-screen h1 {
+            font-size: 1.8em;
+            margin-bottom: 0.5em;
+        }
+
+        #start-screen p {
+            font-size: 1.1em;
+            margin-bottom: 1.5em;
+            color: #333;
+        }
+
+        select, button {
+            font-size: 1em;
+            padding: 10px 16px;
+            border: none;
+            border-radius: 8px;
+            margin: 8px 0;
+        }
+
+        select {
+            background: #eef0f3;
+            width: 100%;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            transition: background 0.2s;
+        }
+
+        button:hover:enabled {
+            background: #0056b3;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #game-screen {
+            text-align: center;
+            padding: 20px;
+        }
+
+        img {
+            max-width: 90vw;
+            max-height: 60vh;
+            margin: 20px auto;
+            border-radius: 12px;
+        }
+
+        #choices button {
+            display: inline-block;
+            margin: 10px 10px;
+            font-size: 1em;
+            padding: 10px 16px;
+            border-radius: 8px;
+            background: #eee;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        #choices button:hover {
+            background: #ddd;
+        }
+
+        #feedback {
+            font-size: 1.2em;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
-    <h1>✈️ Aircraft Recognition Game</h1>
     <div id="start-screen">
-        <p>Test your ability to recognize aircraft!</p>
+        <h1>✈️ Aircraft Recognition Game</h1>
+        <p>Test your aircraft knowledge by guessing based on the image!</p>
         <select id="difficulty-select">
             <option value="easy">🟢 Easy (Airbus/Boeing)</option>
             <option value="normal">🟠 Normal (Aircraft Family)</option>
             <option value="hard">🔴 Hard (Exact Model)</option>
         </select>
-        <br><br>
+        <br>
         <button onclick="startGame()" disabled>▶️ Start Game</button>
     </div>
 
