@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   let data = [];
   let currentAircraft;
+  let lastAircraft;
   let difficulty;
   let score = 0;
   let total = 0;
@@ -13,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(error => console.error("Error loading JSON:", error));
 
-  window.startGame = function() {
+  window.startGame = function () {
     document.getElementById("start-screen").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
     difficulty = document.getElementById("difficulty-select").value;
@@ -25,8 +26,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function nextRound() {
     document.getElementById("feedback").innerText = "";
-    currentAircraft = data[Math.floor(Math.random() * data.length)];
-    document.getElementById("aircraft-img").src = currentAircraft.image;
+
+    // Pick a different aircraft than last round
+    do {
+      currentAircraft = data[Math.floor(Math.random() * data.length)];
+    } while (currentAircraft === lastAircraft);
+    lastAircraft = currentAircraft;
+
+    // Set image with cache-busting timestamp
+    const imageUrl = `${currentAircraft.image}?t=${Date.now()}`;
+    document.getElementById("aircraft-img").src = imageUrl;
+
+    console.log("Next Aircraft:", currentAircraft.model, "| Image:", imageUrl);
+
     const correctAnswer = getCorrectAnswer();
     const answers = generateAnswers(correctAnswer);
     displayChoices(answers, correctAnswer);
@@ -58,23 +70,31 @@ document.addEventListener("DOMContentLoaded", () => {
     answers.forEach(choice => {
       const btn = document.createElement("button");
       btn.innerText = choice;
+      btn.className = "px-4 py-2 border rounded hover:bg-[#eaeaea] hover:text-[#121212] transition font-medium";
       btn.onclick = () => checkAnswer(choice, correctAnswer);
       choicesDiv.appendChild(btn);
     });
   }
 
   function checkAnswer(choice, correctAnswer) {
+    console.log("Clicked:", choice, "| Correct:", correctAnswer);
     total++;
     const feedback = document.getElementById("feedback");
     if (choice === correctAnswer) {
       feedback.innerText = "✅ Correct!";
       score++;
       updateScore();
-      setTimeout(nextRound, 700);
+      setTimeout(() => {
+        console.log("→ Next round (correct)");
+        nextRound();
+      }, 700);
     } else {
       feedback.innerText = `❌ Wrong! It's ${correctAnswer}`;
       updateScore();
-      setTimeout(nextRound, 2000);
+      setTimeout(() => {
+        console.log("→ Next round (wrong)");
+        nextRound();
+      }, 2000);
     }
   }
 
@@ -83,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("total").innerText = total;
   }
 
-  window.resetGame = function() {
+  window.resetGame = function () {
     document.getElementById("game-screen").style.display = "none";
     document.getElementById("start-screen").style.display = "block";
   };
