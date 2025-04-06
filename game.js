@@ -33,11 +33,16 @@ document.addEventListener("DOMContentLoaded", () => {
     } while (currentAircraft === lastAircraft);
     lastAircraft = currentAircraft;
 
-    // Set image with cache-busting timestamp
     const imageUrl = `${currentAircraft.image}?t=${Date.now()}`;
-    document.getElementById("aircraft-img").src = imageUrl;
+    const oldImg = document.getElementById("aircraft-img");
+    const newImg = oldImg.cloneNode();
+    newImg.src = imageUrl;
+    newImg.alt = "Aircraft";
+    newImg.id = "aircraft-img";
+    newImg.className = oldImg.className;
+    oldImg.replaceWith(newImg);
 
-    console.log("Next Aircraft:", currentAircraft.model, "| Image:", imageUrl);
+    console.log("Next Aircraft:", currentAircraft.model, "→", imageUrl);
 
     const correctAnswer = getCorrectAnswer();
     const answers = generateAnswers(correctAnswer);
