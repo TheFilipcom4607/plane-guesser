@@ -4,17 +4,26 @@
   <meta charset="UTF-8" />
   <title>PlaneGuessr</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <!-- Pure Tailwind CSS with no extra style sheets -->
+  <!-- External CSS -->
+  <link rel="stylesheet" href="https://assets.thefilip.com/style.css" />
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Override external CSS to allow full-width centering -->
+  <style>
+    body {
+      max-width: 100% !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+  </style>
 </head>
 <body class="bg-[#121212] text-[#eaeaea] h-screen flex flex-col">
 
-  <!-- Main content, centered both horizontally & vertically -->
-  <main class="flex-grow flex flex-col items-center justify-center">
-    <div class="mx-auto text-center max-w-md">
+  <!-- Main content centered vertically and horizontally -->
+  <main class="flex-grow flex items-center justify-center w-full">
+    <div class="text-center w-full max-w-md px-6 mx-auto">
       <h1 class="text-3xl font-bold mb-2">PlaneGuessr</h1>
       <p class="mb-6">A simple game to test your ability to recognize aircraft!</p>
-
       <select id="difficulty-select" class="mb-4">
         <option value="easy">🟢 Easy (Airbus/Boeing)</option>
         <option value="normal">🟠 Normal (Aircraft Family)</option>
@@ -22,8 +31,7 @@
       </select>
       <br />
       <button onclick="startGame()" disabled>▶️ Start Game</button>
-
-      <div id="game-screen" class="mt-8 hidden">
+      <div id="game-screen" style="display:none;" class="mt-8">
         <div>Score: <span id="score">0</span>/<span id="total">0</span></div>
         <img id="aircraft-img" src="" alt="Aircraft" class="mx-auto my-4" />
         <div id="choices"></div>
