@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let total = 0;
   let highScore = localStorage.getItem("planeguessrHighScore") || 0;
   let usedAircraft = [];
+  let recentFamilies = [];
+  const MAX_RECENT_FAMILIES = 5;
 
   document.getElementById("high-score").innerText = highScore;
 
@@ -25,6 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
     score = 0;
     total = 0;
     usedAircraft = [];
+    recentFamilies = [];
     updateScore();
     nextRound();
   };
@@ -37,15 +40,25 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    let attempts = 0;
     do {
       currentAircraft = data[Math.floor(Math.random() * data.length)];
+      attempts++;
+      if (attempts > 100) break; // just in case
     } while (
       currentAircraft === lastAircraft ||
-      usedAircraft.includes(currentAircraft.model)
+      usedAircraft.includes(currentAircraft.model) ||
+      recentFamilies.includes(currentAircraft.family)
     );
 
     lastAircraft = currentAircraft;
     usedAircraft.push(currentAircraft.model);
+
+    // Update recent families
+    recentFamilies.push(currentAircraft.family);
+    if (recentFamilies.length > MAX_RECENT_FAMILIES) {
+      recentFamilies.shift();
+    }
 
     const imageUrl = `${currentAircraft.image}?t=${Date.now()}`;
     const oldImg = document.getElementById("aircraft-img");
@@ -90,8 +103,12 @@ document.addEventListener("DOMContentLoaded", () => {
     answers.forEach(choice => {
       const btn = document.createElement("button");
       btn.innerText = choice;
-      btn.className = "px-4 py-2 border rounded hover:bg-[#eaeaea] hover:text-[#121212] transition font-medium";
-      btn.onclick = () => checkAnswer(choice, correctAnswer);
+      btn.className = "choice-btn px-4 py-2 border rounded hover:bg-[#eaeaea] hover:text-[#121212] transition font-medium";
+      btn.disabled = false;
+      btn.onclick = () => {
+        document.querySelectorAll(".choice-btn").forEach(b => b.disabled = true);
+        checkAnswer(choice, correctAnswer);
+      };
       choicesDiv.appendChild(btn);
     });
   }
