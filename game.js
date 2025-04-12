@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     do {
       currentAircraft = data[Math.floor(Math.random() * data.length)];
       attempts++;
-      if (attempts > 100) break; // just in case
+      if (attempts > 100) break;
     } while (
       currentAircraft === lastAircraft ||
       usedAircraft.includes(currentAircraft.model) ||
@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
     lastAircraft = currentAircraft;
     usedAircraft.push(currentAircraft.model);
 
-    // Update recent families
     recentFamilies.push(currentAircraft.family);
     if (recentFamilies.length > MAX_RECENT_FAMILIES) {
       recentFamilies.shift();
@@ -107,15 +106,25 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.disabled = false;
       btn.onclick = () => {
         document.querySelectorAll(".choice-btn").forEach(b => b.disabled = true);
-        checkAnswer(choice, correctAnswer);
+        checkAnswer(choice, correctAnswer, btn);
       };
       choicesDiv.appendChild(btn);
     });
   }
 
-  function checkAnswer(choice, correctAnswer) {
+  function checkAnswer(choice, correctAnswer, clickedBtn) {
     total++;
     const feedback = document.getElementById("feedback");
+    const buttons = document.querySelectorAll(".choice-btn");
+
+    buttons.forEach(btn => {
+      if (btn.innerText === correctAnswer) {
+        btn.classList.add("border-green-500", "ring", "ring-green-400");
+      } else if (btn === clickedBtn) {
+        btn.classList.add("border-red-500", "ring", "ring-red-400");
+      }
+    });
+
     if (choice === correctAnswer) {
       feedback.innerText = "✅ Correct!";
       score++;
@@ -150,4 +159,15 @@ document.addEventListener("DOMContentLoaded", () => {
       [array[i], array[j]] = [array[j], array[i]];
     }
   }
+
+  document.addEventListener("keydown", (e) => {
+    const key = e.key;
+    const buttons = Array.from(document.querySelectorAll(".choice-btn"));
+    if (["1", "2", "3", "4"].includes(key) && buttons.length >= 4) {
+      const index = parseInt(key) - 1;
+      if (!buttons[index].disabled) {
+        buttons[index].click();
+      }
+    }
+  });
 });
