@@ -116,10 +116,16 @@ document.addEventListener("DOMContentLoaded", () => {
       return ac.model;
     });
     answers = [...new Set(answers.filter(a => a !== correctAnswer))];
-    shuffleArray(answers);
-    answers = answers.slice(0, 3);
-    answers.push(correctAnswer);
-    shuffleArray(answers);
+
+    if (difficulty === "easy") {
+      // Always return Airbus then Boeing (or reversed if needed)
+      answers = ["Airbus", "Boeing"];
+    } else {
+      shuffleArray(answers);
+      answers = answers.slice(0, 3);
+      answers.push(correctAnswer);
+      shuffleArray(answers);
+    }
     return answers;
   }
 
