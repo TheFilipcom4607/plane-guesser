@@ -152,11 +152,23 @@ document.addEventListener("DOMContentLoaded", () => {
       feedback.innerText = "✅ Correct!";
       score++;
       updateScore();
-      if (mode !== "timed") setTimeout(nextRound, 700);
+      setTimeout(() => {
+        if (mode === "timed") {
+          nextRound();
+        } else {
+          nextRound();
+        }
+      }, 300);
     } else {
       feedback.innerText = `❌ Wrong! It's ${correctAnswer}`;
       updateScore();
-      if (mode !== "timed") setTimeout(nextRound, 2000);
+      setTimeout(() => {
+        if (mode === "timed") {
+          nextRound();
+        } else {
+          nextRound();
+        }
+      }, 500);
     }
   }
 
