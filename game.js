@@ -55,12 +55,16 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   function endTimedGame() {
-    document.getElementById("feedback").innerText = `⏹️ Time's up! Final score: ${score}`;
+    const feedback = document.getElementById("feedback");
+    feedback.innerText = `⏹️ Time's up! Final score: ${score}`;
+    feedback.classList.add("text-3xl", "font-bold");
     document.querySelectorAll(".choice-btn").forEach(btn => btn.disabled = true);
   }
 
   function nextRound() {
-    document.getElementById("feedback").innerText = "";
+    const feedback = document.getElementById("feedback");
+    feedback.innerText = "";
+    feedback.classList.remove("text-3xl", "font-bold");
 
     if (usedAircraft.length === data.length) {
       document.getElementById("feedback").innerText = "You’ve seen all aircraft! More will be added soon. GG";
@@ -153,22 +157,14 @@ document.addEventListener("DOMContentLoaded", () => {
       score++;
       updateScore();
       setTimeout(() => {
-        if (mode === "timed") {
-          nextRound();
-        } else {
-          nextRound();
-        }
-      }, 300);
+        nextRound();
+      }, mode === "timed" ? 300 : 700);
     } else {
       feedback.innerText = `❌ Wrong! It's ${correctAnswer}`;
       updateScore();
       setTimeout(() => {
-        if (mode === "timed") {
-          nextRound();
-        } else {
-          nextRound();
-        }
-      }, 500);
+        nextRound();
+      }, mode === "timed" ? 500 : 2000);
     }
   }
 
@@ -199,9 +195,9 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener("keydown", (e) => {
     const key = e.key;
     const buttons = Array.from(document.querySelectorAll(".choice-btn"));
-    if (["1", "2", "3", "4"].includes(key) && buttons.length >= 4) {
+    if (["1", "2", "3", "4"].includes(key)) {
       const index = parseInt(key) - 1;
-      if (!buttons[index].disabled) {
+      if (index < buttons.length && !buttons[index].disabled) {
         buttons[index].click();
       }
     }
