@@ -1,4 +1,3 @@
-// === UPDATED game.js with Timed Mode and Time Select ===
 document.addEventListener("DOMContentLoaded", () => {
   let data = [];
   let currentAircraft;
@@ -14,6 +13,21 @@ document.addEventListener("DOMContentLoaded", () => {
   let timerInterval;
   let timeLeft = 60;
   let gameOver = false;
+
+  const modeSelect = document.getElementById("mode-select");
+  const timeSelect = document.getElementById("time-select");
+
+  modeSelect.addEventListener("change", () => {
+    if (modeSelect.value === "timed") {
+      timeSelect.style.display = "block";
+    } else {
+      timeSelect.style.display = "none";
+    }
+  });
+
+  if (modeSelect.value !== "timed") {
+    timeSelect.style.display = "none";
+  }
 
   document.getElementById("high-score").innerText = highScore;
 
