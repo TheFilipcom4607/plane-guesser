@@ -1,4 +1,4 @@
-// === UPDATED game.js with Timed Mode ===
+// === UPDATED game.js with Timed Mode and Time Select ===
 document.addEventListener("DOMContentLoaded", () => {
   let data = [];
   let currentAircraft;
@@ -38,7 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
     updateScore();
 
     if (mode === "timed") {
-      timeLeft = 60;
+      const selectedTime = parseInt(document.getElementById("time-select")?.value || "60", 10);
+      timeLeft = selectedTime;
       document.getElementById("timer").innerText = `⏱️ Time Left: ${timeLeft}s`;
       document.getElementById("timer").style.display = "block";
       timerInterval = setInterval(() => {
@@ -123,7 +124,6 @@ document.addEventListener("DOMContentLoaded", () => {
     answers = [...new Set(answers.filter(a => a !== correctAnswer))];
 
     if (difficulty === "easy") {
-      // Always return Airbus then Boeing (or reversed if needed)
       answers = ["Airbus", "Boeing"];
     } else {
       shuffleArray(answers);
