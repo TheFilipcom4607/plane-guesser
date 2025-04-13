@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const MAX_RECENT_FAMILIES = 5;
   let timerInterval;
   let timeLeft = 60;
+  let gameOver = false;
 
   document.getElementById("high-score").innerText = highScore;
 
@@ -33,6 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
     total = 0;
     usedAircraft = [];
     recentFamilies = [];
+    gameOver = false;
     updateScore();
 
     if (mode === "timed") {
@@ -55,6 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   function endTimedGame() {
+    gameOver = true;
     const feedback = document.getElementById("feedback");
     feedback.innerText = `⏹️ Time's up! Final score: ${score}`;
     feedback.classList.add("text-3xl", "font-bold");
@@ -62,6 +65,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function nextRound() {
+    if (gameOver) return;
+
     const feedback = document.getElementById("feedback");
     feedback.innerText = "";
     feedback.classList.remove("text-3xl", "font-bold");
@@ -189,6 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("game-screen").style.display = "none";
     document.getElementById("start-screen").style.display = "block";
     clearInterval(timerInterval);
+    gameOver = false;
   };
 
   function shuffleArray(array) {
