@@ -1,14 +1,18 @@
+// === UPDATED game.js with Timed Mode ===
 document.addEventListener("DOMContentLoaded", () => {
   let data = [];
   let currentAircraft;
   let lastAircraft;
   let difficulty;
+  let mode;
   let score = 0;
   let total = 0;
   let highScore = localStorage.getItem("planeguessrHighScore") || 0;
   let usedAircraft = [];
   let recentFamilies = [];
   const MAX_RECENT_FAMILIES = 5;
+  let timerInterval;
+  let timeLeft = 60;
 
   document.getElementById("high-score").innerText = highScore;
 
@@ -16,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(res => res.json())
     .then(json => {
       data = json;
-      document.querySelector('button[onclick="startGame()"]').disabled = false;
+      document.querySelector('button[onclick="startGame()"]')?.removeAttribute("disabled");
     })
     .catch(error => console.error("Error loading JSON:", error));
 
@@ -24,13 +28,36 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("start-screen").style.display = "none";
     document.getElementById("game-screen").style.display = "block";
     difficulty = document.getElementById("difficulty-select").value;
+    mode = document.getElementById("mode-select").value;
     score = 0;
     total = 0;
     usedAircraft = [];
     recentFamilies = [];
     updateScore();
+
+    if (mode === "timed") {
+      timeLeft = 60;
+      document.getElementById("timer").innerText = `⏱️ Time Left: ${timeLeft}s`;
+      document.getElementById("timer").style.display = "block";
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").innerText = `⏱️ Time Left: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          endTimedGame();
+        }
+      }, 1000);
+    } else {
+      document.getElementById("timer").style.display = "none";
+    }
+
     nextRound();
   };
+
+  function endTimedGame() {
+    document.getElementById("feedback").innerText = `⏹️ Time's up! Final score: ${score}`;
+    document.querySelectorAll(".choice-btn").forEach(btn => btn.disabled = true);
+  }
 
   function nextRound() {
     document.getElementById("feedback").innerText = "";
@@ -55,9 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     usedAircraft.push(currentAircraft.model);
 
     recentFamilies.push(currentAircraft.family);
-    if (recentFamilies.length > MAX_RECENT_FAMILIES) {
-      recentFamilies.shift();
-    }
+    if (recentFamilies.length > MAX_RECENT_FAMILIES) recentFamilies.shift();
 
     const imageUrl = `${currentAircraft.image}?t=${Date.now()}`;
     const oldImg = document.getElementById("aircraft-img");
@@ -66,9 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
     newImg.alt = "Aircraft";
     newImg.id = "aircraft-img";
     newImg.className = oldImg.className.replace("loaded", "");
-    newImg.onload = () => {
-      newImg.classList.add("loaded");
-    };
+    newImg.onload = () => newImg.classList.add("loaded");
     oldImg.replaceWith(newImg);
 
     const correctAnswer = getCorrectAnswer();
@@ -129,11 +152,11 @@ document.addEventListener("DOMContentLoaded", () => {
       feedback.innerText = "✅ Correct!";
       score++;
       updateScore();
-      setTimeout(nextRound, 700);
+      if (mode !== "timed") setTimeout(nextRound, 700);
     } else {
       feedback.innerText = `❌ Wrong! It's ${correctAnswer}`;
       updateScore();
-      setTimeout(nextRound, 2000);
+      if (mode !== "timed") setTimeout(nextRound, 2000);
     }
   }
 
@@ -151,6 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.resetGame = function () {
     document.getElementById("game-screen").style.display = "none";
     document.getElementById("start-screen").style.display = "block";
+    clearInterval(timerInterval);
   };
 
   function shuffleArray(array) {
