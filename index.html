@@ -30,32 +30,42 @@
       <div id="start-screen" class="space-y-6">
         <h1 class="text-7xl font-extrabold">PlaneGuessr</h1>
         <p class="text-xl">A simple game to test your ability to recognize aircraft!</p>
-        <select id="difficulty-select" class="px-6 py-3 border border-[#eaeaea] bg-[#121212] text-[#eaeaea] rounded text-lg">
-          <option value="easy">🟢 Easy (Airbus/Boeing)</option>
-          <option value="normal">🟠 Normal (Aircraft Family)</option>
-          <option value="hard">🔴 Hard (Exact Model)</option>
-        </select>
-        <select id="mode-select" class="px-6 py-3 border border-[#eaeaea] bg-[#121212] text-[#eaeaea] rounded text-lg">
-          <option value="normal">🎯 Normal Mode</option>
-          <option value="timed">⏱️ Timed Mode (60s)</option>
-        </select>
-        <select id="time-select" class="px-6 py-3 border border-[#eaeaea] bg-[#121212] text-[#eaeaea] rounded text-lg">
-          <option value="15">⏱️ 15s Blitz</option>
-          <option value="30">⚡ 30s Fast</option>
-          <option value="45">🚀 45s Quick</option>
-          <option value="60" selected>🧠 60s Normal</option>
-          <option value="90">🎯 90s Prolonged</option>
-        </select>
+
+        <!-- Flex container for selectors -->
+        <div class="flex flex-col items-center space-y-3 md:flex-row md:space-y-0 md:space-x-4 justify-center">
+          <!-- Difficulty selector -->
+          <select id="difficulty-select" class="px-6 py-3 border border-[#eaeaea] bg-[#121212] text-[#eaeaea] rounded text-lg">
+            <option value="easy">🟢 Easy (Airbus/Boeing)</option>
+            <option value="normal">🟠 Normal (Aircraft Family)</option>
+            <option value="hard">🔴 Hard (Exact Model)</option>
+          </select>
+
+          <!-- Mode selector -->
+          <select id="mode-select" class="px-6 py-3 border border-[#eaeaea] bg-[#121212] text-[#eaeaea] rounded text-lg">
+            <option value="normal">🎯 Normal Mode</option>
+            <option value="timed">⏱️ Timed Mode (60s)</option>
+          </select>
+
+          <!-- Time selector (hidden by default) -->
+          <select id="time-select" style="display: none;" class="px-6 py-3 border border-[#eaeaea] bg-[#121212] text-[#eaeaea] rounded text-lg">
+            <option value="15">⏱️ 15s Blitz</option>
+            <option value="30">⚡ 30s Fast</option>
+            <option value="45">🚀 45s Quick</option>
+            <option value="60" selected>🧠 60s Normal</option>
+            <option value="90">🎯 90s Prolonged</option>
+          </select>
+        </div>
+
         <br>
         <button onclick="startGame()" disabled class="mt-4 px-8 py-3 border rounded hover:bg-[#eaeaea] hover:text-[#121212] transition font-medium text-lg">▶️ Start Game</button>
       </div>
 
       <div id="game-screen" style="display:none;" class="space-y-6">
         <div class="space-y-1 text-base">
-        <div id="timer" class="text-white-700" style="display: none;"></div>
-        <div class="text-white-500">Score: <span id="score">0</span>/<span id="total">0</span></div>
-        <div class="text-white-400">High Score: <span id="high-score">0</span></div>
-      </div>
+          <div class="text-white-500">Score: <span id="score">0</span>/<span id="total">0</span></div>
+          <div class="text-white-400">High Score: <span id="high-score">0</span></div>
+          <div id="timer" class="text-white-400 text-lg" style="display: none;"></div>
+        </div>
         <div class="bg-white rounded shadow-md p-6">
           <img id="aircraft-img" src="" alt="Aircraft" class="mx-auto max-h-[400px] w-auto rounded" />
         </div>
