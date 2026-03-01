@@ -16,7 +16,7 @@ You'll see a side-view drawing of an aircraft. Your goal is to correctly identif
 
 - **Normal Mode:** Standard scoring and progression
 - **Timed Mode:** Choose your time limit and score as much as you can
-- **Endless Mode:** Coming soon — go until you make a mistake
+- **Endless Mode:** Coming soon, go until you make a mistake
 
 ## Difficulty Levels
 
