@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (choice === correctAnswer) {
-      feedback.innerHTML = '<span style="color:#4ade80;">Correct!</span>';
+      feedback.innerHTML = '<span style="color:#4ade80;">&#10003; Correct!</span>';
       score++;
       const scoreEl = document.getElementById("score");
       scoreEl.classList.remove("score-pop");
@@ -202,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
       updateScore();
       setTimeout(() => nextRound(), mode === "timed" ? 300 : 700);
     } else {
-      feedback.innerHTML = `<span style="color:#f87171;">Wrong!</span> It was ${correctAnswer}`;
+      feedback.innerHTML = `<span style="color:#f87171;">&#10007; Wrong!</span> <span style="color:#888;margin-left:4px;">The answer was</span> <span style="color:#eaeaea;font-weight:700;">${correctAnswer}</span>`;
       updateScore();
       setTimeout(() => nextRound(), mode === "timed" ? 500 : 2000);
     }
@@ -243,7 +243,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (["1", "2", "3", "4"].includes(key)) {
       const index = parseInt(key) - 1;
       if (index < buttons.length && !buttons[index].disabled) {
-        buttons[index].click();
+        const btn = buttons[index];
+        // Visual press feedback
+        btn.style.background = "#eaeaea";
+        btn.style.color = "#121212";
+        btn.style.transform = "translateY(-3px)";
+        btn.style.boxShadow = "0 4px 12px rgba(234, 234, 234, 0.2)";
+        btn.click();
       }
     }
   });
