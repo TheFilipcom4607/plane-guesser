@@ -15,18 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
   let gameOver = false;
 
   const modeSelect = document.getElementById("mode-select");
-  const timeSelect = document.getElementById("time-select");
+  const timeWrapper = document.getElementById("time-wrapper");
 
   modeSelect.addEventListener("change", () => {
-    if (modeSelect.value === "timed") {
-      timeSelect.style.display = "block";
-    } else {
-      timeSelect.style.display = "none";
-    }
+    timeWrapper.style.display = modeSelect.value === "timed" ? "block" : "none";
   });
 
   if (modeSelect.value !== "timed") {
-    timeSelect.style.display = "none";
+    timeWrapper.style.display = "none";
   }
 
   document.getElementById("high-score").innerText = highScore;
@@ -41,7 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.startGame = function () {
     document.getElementById("start-screen").style.display = "none";
-    document.getElementById("game-screen").style.display = "block";
+    const gameScreen = document.getElementById("game-screen");
+    gameScreen.style.display = "block";
+    gameScreen.classList.remove("screen-fade");
+    void gameScreen.offsetWidth;
+    gameScreen.classList.add("screen-fade");
+
     difficulty = document.getElementById("difficulty-select").value;
     mode = document.getElementById("mode-select").value;
     score = 0;
@@ -54,18 +55,30 @@ document.addEventListener("DOMContentLoaded", () => {
     if (mode === "timed") {
       const selectedTime = parseInt(document.getElementById("time-select")?.value || "60", 10);
       timeLeft = selectedTime;
-      document.getElementById("timer").innerText = `⏱️ Time Left: ${timeLeft}s`;
-      document.getElementById("timer").style.display = "block";
+      const totalTime = selectedTime;
+      document.getElementById("timer").innerText = `${timeLeft}s`;
+      document.getElementById("timer").style.color = "";
+      document.getElementById("timer-container").style.display = "";
+      document.getElementById("timer-bar-wrapper").style.display = "block";
+      document.getElementById("timer-bar").style.width = "100%";
+      document.getElementById("timer-bar").style.backgroundColor = "";
       timerInterval = setInterval(() => {
         timeLeft--;
-        document.getElementById("timer").innerText = `⏱️ Time Left: ${timeLeft}s`;
+        document.getElementById("timer").innerText = `${timeLeft}s`;
+        const pct = (timeLeft / totalTime) * 100;
+        document.getElementById("timer-bar").style.width = `${pct}%`;
+        if (timeLeft <= 10) {
+          document.getElementById("timer").style.color = "#e94560";
+          document.getElementById("timer-bar").style.backgroundColor = "#e94560";
+        }
         if (timeLeft <= 0) {
           clearInterval(timerInterval);
           endTimedGame();
         }
       }, 1000);
     } else {
-      document.getElementById("timer").style.display = "none";
+      document.getElementById("timer-container").style.display = "none";
+      document.getElementById("timer-bar-wrapper").style.display = "none";
     }
 
     nextRound();
@@ -74,8 +87,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function endTimedGame() {
     gameOver = true;
     const feedback = document.getElementById("feedback");
-    feedback.innerText = `⏹️ Time's up! Final score: ${score}`;
-    feedback.classList.add("text-3xl", "font-bold");
+    feedback.innerText = `Time's up! Final score: ${score}`;
+    feedback.classList.add("text-3xl");
     document.querySelectorAll(".choice-btn").forEach(btn => btn.disabled = true);
   }
 
@@ -84,10 +97,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const feedback = document.getElementById("feedback");
     feedback.innerText = "";
-    feedback.classList.remove("text-3xl", "font-bold");
+    feedback.classList.remove("text-3xl");
 
     if (usedAircraft.length === data.length) {
-      document.getElementById("feedback").innerText = "You’ve seen all aircraft! More will be added soon. GG";
+      document.getElementById("feedback").innerText = "You've seen all aircraft! More will be added soon. GG";
       return;
     }
 
@@ -151,10 +164,10 @@ document.addEventListener("DOMContentLoaded", () => {
   function displayChoices(answers, correctAnswer) {
     const choicesDiv = document.getElementById("choices");
     choicesDiv.innerHTML = "";
-    answers.forEach(choice => {
+    answers.forEach((choice, i) => {
       const btn = document.createElement("button");
-      btn.innerText = choice;
-      btn.className = "choice-btn px-4 py-2 border rounded hover:bg-[#eaeaea] hover:text-[#121212] transition font-medium";
+      btn.innerHTML = `<span style="opacity:0.4;margin-right:6px;font-size:0.8em;">${i + 1}</span>${choice}`;
+      btn.className = "choice-btn";
       btn.disabled = false;
       btn.onclick = () => {
         document.querySelectorAll(".choice-btn").forEach(b => b.disabled = true);
@@ -170,26 +183,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const buttons = document.querySelectorAll(".choice-btn");
 
     buttons.forEach(btn => {
-      if (btn.innerText === correctAnswer) {
-        btn.classList.add("border-green-500", "ring", "ring-green-400");
+      if (btn.textContent.slice(1) === correctAnswer || btn.textContent.slice(2) === correctAnswer) {
+        btn.style.borderColor = "#4ade80";
+        btn.style.boxShadow = "0 0 0 2px rgba(74, 222, 128, 0.3)";
       } else if (btn === clickedBtn) {
-        btn.classList.add("border-red-500", "ring", "ring-red-400");
+        btn.style.borderColor = "#f87171";
+        btn.style.boxShadow = "0 0 0 2px rgba(248, 113, 113, 0.3)";
       }
     });
 
     if (choice === correctAnswer) {
-      feedback.innerText = "✅ Correct!";
+      feedback.innerHTML = '<span style="color:#4ade80;">Correct!</span>';
       score++;
+      const scoreEl = document.getElementById("score");
+      scoreEl.classList.remove("score-pop");
+      void scoreEl.offsetWidth;
+      scoreEl.classList.add("score-pop");
       updateScore();
-      setTimeout(() => {
-        nextRound();
-      }, mode === "timed" ? 300 : 700);
+      setTimeout(() => nextRound(), mode === "timed" ? 300 : 700);
     } else {
-      feedback.innerText = `❌ Wrong! It's ${correctAnswer}`;
+      feedback.innerHTML = `<span style="color:#f87171;">Wrong!</span> It was ${correctAnswer}`;
       updateScore();
-      setTimeout(() => {
-        nextRound();
-      }, mode === "timed" ? 500 : 2000);
+      setTimeout(() => nextRound(), mode === "timed" ? 500 : 2000);
     }
   }
 
@@ -206,7 +221,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.resetGame = function () {
     document.getElementById("game-screen").style.display = "none";
-    document.getElementById("start-screen").style.display = "block";
+    const startScreen = document.getElementById("start-screen");
+    startScreen.style.display = "block";
+    startScreen.classList.remove("screen-fade");
+    void startScreen.offsetWidth;
+    startScreen.classList.add("screen-fade");
     clearInterval(timerInterval);
     gameOver = false;
   };
