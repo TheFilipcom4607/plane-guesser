@@ -6,7 +6,7 @@
 
 **PlaneGuessr** is a browser-based game that challenges your ability to recognize aircraft based on side-profile illustrations. It's a quick and fun way to improve your aircraft recognition skills.
 
-**[▶️ Play Now](https://planeguessr.thefilip.com)**
+**[▶️ Play Now](https://planeguessr.com)**
 
 ## How It Works
 
