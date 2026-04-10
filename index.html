@@ -11,9 +11,13 @@
       max-width: 100% !important;
       margin: 0 !important;
       padding: 0 !important;
-      padding-top: env(safe-area-inset-top) !important;
-      padding-bottom: env(safe-area-inset-bottom) !important;
-      min-height: 100dvh !important;
+    }
+
+    main {
+      min-height: 100vh;
+      min-height: 100dvh;
+      padding-top: env(safe-area-inset-top);
+      padding-bottom: env(safe-area-inset-bottom);
     }
 
     /* Buttons — !important to beat Tailwind preflight */
@@ -140,8 +144,8 @@
     }
   </style>
 </head>
-<body class="bg-[#121212] text-[#eaeaea] flex flex-col text-lg">
-  <main class="flex-grow flex items-center justify-center px-4">
+<body class="bg-[#121212] text-[#eaeaea] text-lg">
+  <main class="flex items-center justify-center px-4">
     <div class="w-full max-w-2xl text-center space-y-10">
 
       <!-- Start Screen -->
