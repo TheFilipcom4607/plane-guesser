@@ -168,6 +168,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const btn = document.createElement("button");
       btn.innerHTML = `<span style="opacity:0.4;margin-right:6px;font-size:0.8em;">${i + 1}</span>${choice}`;
       btn.className = "choice-btn";
+      btn.dataset.answer = choice;
       btn.disabled = false;
       btn.onclick = () => {
         document.querySelectorAll(".choice-btn").forEach(b => b.disabled = true);
@@ -183,12 +184,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const buttons = document.querySelectorAll(".choice-btn");
 
     buttons.forEach(btn => {
-      if (btn.textContent.slice(1) === correctAnswer || btn.textContent.slice(2) === correctAnswer) {
-        btn.style.borderColor = "#4ade80";
-        btn.style.boxShadow = "0 0 0 2px rgba(74, 222, 128, 0.3)";
-      } else if (btn === clickedBtn) {
-        btn.style.borderColor = "#f87171";
-        btn.style.boxShadow = "0 0 0 2px rgba(248, 113, 113, 0.3)";
+      if (btn.dataset.answer === correctAnswer) {
+        btn.classList.add("correct");
+      }
+      if (btn === clickedBtn && choice !== correctAnswer) {
+        btn.classList.add("wrong");
       }
     });
 
@@ -200,11 +200,11 @@ document.addEventListener("DOMContentLoaded", () => {
       void scoreEl.offsetWidth;
       scoreEl.classList.add("score-pop");
       updateScore();
-      setTimeout(() => nextRound(), mode === "timed" ? 300 : 700);
+      setTimeout(() => nextRound(), mode === "timed" ? 400 : 1000);
     } else {
       feedback.innerHTML = `<span style="color:#f87171;">&#10007; Wrong!</span> <span style="color:#888;margin-left:4px;">The answer was</span> <span style="color:#eaeaea;font-weight:700;">${correctAnswer}</span>`;
       updateScore();
-      setTimeout(() => nextRound(), mode === "timed" ? 500 : 2000);
+      setTimeout(() => nextRound(), mode === "timed" ? 600 : 2500);
     }
   }
 
@@ -244,11 +244,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const index = parseInt(key) - 1;
       if (index < buttons.length && !buttons[index].disabled) {
         const btn = buttons[index];
-        // Visual press feedback
-        btn.style.background = "#eaeaea";
-        btn.style.color = "#121212";
-        btn.style.transform = "translateY(-3px)";
-        btn.style.boxShadow = "0 4px 12px rgba(234, 234, 234, 0.2)";
+        btn.classList.add("pressed");
         btn.click();
       }
     }
