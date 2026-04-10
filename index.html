@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>PlaneGuessr</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <link rel="stylesheet" href="https://assets.thefilip.com/style.css" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -11,6 +11,9 @@
       max-width: 100% !important;
       margin: 0 !important;
       padding: 0 !important;
+      padding-top: env(safe-area-inset-top) !important;
+      padding-bottom: env(safe-area-inset-bottom) !important;
+      min-height: 100dvh !important;
     }
 
     /* Buttons — !important to beat Tailwind preflight */
@@ -137,7 +140,7 @@
     }
   </style>
 </head>
-<body class="bg-[#121212] text-[#eaeaea] min-h-screen flex flex-col text-lg">
+<body class="bg-[#121212] text-[#eaeaea] flex flex-col text-lg">
   <main class="flex-grow flex items-center justify-center px-4">
     <div class="w-full max-w-2xl text-center space-y-10">
 
