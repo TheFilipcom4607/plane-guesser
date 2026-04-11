@@ -14,11 +14,28 @@
       padding: 0 !important;
     }
 
+    /* Mobile: main fills full viewport so footer is below the fold */
     main {
       min-height: 100vh;
       min-height: 100dvh;
       padding-top: env(safe-area-inset-top);
       padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    /* Desktop: body fills viewport as flex column, main grows, footer visible */
+    @media (min-width: 1024px) {
+      body {
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex !important;
+        flex-direction: column !important;
+      }
+      main {
+        min-height: 0;
+        flex: 1;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+      }
     }
 
     /* Buttons — !important to beat Tailwind preflight */
