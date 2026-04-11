@@ -184,12 +184,14 @@
             </select>
           </div>
 
-          <div>
+          <div id="filter-wrapper">
             <label class="block text-sm text-gray-400 mb-1">Filter</label>
             <select id="filter-select" class="w-full">
               <option value="all">All Aircraft</option>
               <option value="Airbus">Airbus Only</option>
               <option value="Boeing">Boeing Only</option>
+              <option value="widebody">Widebody Only</option>
+              <option value="narrowbody">Narrowbody Only</option>
             </select>
           </div>
 
@@ -231,7 +233,8 @@
 
         <!-- Score row -->
         <div class="flex items-center justify-center gap-6 text-base flex-wrap">
-          <div>Score: <span id="score" class="font-bold text-[#40E0D0]">0</span>/<span id="total">0</span></div>
+          <div><span id="correct-count" class="font-bold text-[#40E0D0]">0</span>/<span id="total">0</span></div>
+          <div id="points-container" style="display:none;"><span id="score" class="font-bold text-[#40E0D0] score-pop">0</span> pts</div>
           <div class="text-gray-500">|</div>
           <div>Best: <span id="high-score" class="font-bold">0</span></div>
           <div id="streak-container" style="display:none;">

@@ -29,15 +29,36 @@ document.addEventListener("DOMContentLoaded", () => {
     bestStreak: 0
   };
 
+  // Widebody/narrowbody classification by family
+  const widebodyFamilies = new Set([
+    "A300", "A310", "A330", "A340", "A350", "A380",
+    "747", "767", "777", "787"
+  ]);
+
   const modeSelect = document.getElementById("mode-select");
   const timeWrapper = document.getElementById("time-wrapper");
+  const difficultySelect = document.getElementById("difficulty-select");
+  const filterWrapper = document.getElementById("filter-wrapper");
+  const filterSelect = document.getElementById("filter-select");
 
   modeSelect.addEventListener("change", () => {
     timeWrapper.style.display = modeSelect.value === "timed" ? "block" : "none";
   });
 
+  difficultySelect.addEventListener("change", () => {
+    if (difficultySelect.value === "easy") {
+      filterWrapper.style.display = "none";
+      filterSelect.value = "all";
+    } else {
+      filterWrapper.style.display = "";
+    }
+  });
+
   if (modeSelect.value !== "timed") {
     timeWrapper.style.display = "none";
+  }
+  if (difficultySelect.value === "easy") {
+    filterWrapper.style.display = "none";
   }
 
   document.getElementById("high-score").innerText = highScore;
@@ -116,9 +137,17 @@ document.addEventListener("DOMContentLoaded", () => {
     difficulty = document.getElementById("difficulty-select").value;
     mode = document.getElementById("mode-select").value;
 
-    // Apply manufacturer filter
+    // Apply filter
     const filter = document.getElementById("filter-select").value;
-    activeData = filter === "all" ? data : data.filter(ac => ac.manufacturer === filter);
+    if (filter === "all" || difficulty === "easy") {
+      activeData = data;
+    } else if (filter === "widebody") {
+      activeData = data.filter(ac => widebodyFamilies.has(ac.family));
+    } else if (filter === "narrowbody") {
+      activeData = data.filter(ac => !widebodyFamilies.has(ac.family));
+    } else {
+      activeData = data.filter(ac => ac.manufacturer === filter);
+    }
 
     score = 0;
     total = 0;
@@ -168,7 +197,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gameOver = true;
     saveLifeStats();
     const feedback = document.getElementById("feedback");
-    feedback.innerText = `Time's up! Final score: ${score}`;
+    feedback.innerText = `Time's up! ${correctCount}/${total} correct — ${score} pts`;
     feedback.classList.add("text-3xl");
     document.querySelectorAll(".choice-btn").forEach(btn => btn.disabled = true);
   }
@@ -288,10 +317,16 @@ document.addEventListener("DOMContentLoaded", () => {
         feedback.innerHTML = '<span style="color:#4ade80;">&#10003; Correct!</span>';
       }
 
-      const scoreEl = document.getElementById("score");
-      scoreEl.classList.remove("score-pop");
-      void scoreEl.offsetWidth;
-      scoreEl.classList.add("score-pop");
+      const countEl = document.getElementById("correct-count");
+      countEl.classList.remove("score-pop");
+      void countEl.offsetWidth;
+      countEl.classList.add("score-pop");
+      if (mode === "timed") {
+        const scoreEl = document.getElementById("score");
+        scoreEl.classList.remove("score-pop");
+        void scoreEl.offsetWidth;
+        scoreEl.classList.add("score-pop");
+      }
       updateScore();
       setTimeout(() => nextRound(), mode === "timed" ? 400 : 1000);
     } else {
@@ -304,8 +339,12 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function updateScore() {
-    document.getElementById("score").innerText = score;
+    document.getElementById("correct-count").innerText = correctCount;
     document.getElementById("total").innerText = total;
+    document.getElementById("score").innerText = score;
+
+    // Show points separately in timed mode
+    document.getElementById("points-container").style.display = (mode === "timed") ? "" : "none";
 
     if (score > highScore) {
       highScore = score;
