@@ -31,8 +31,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Widebody/narrowbody classification by family
   const widebodyFamilies = new Set([
-    "A300", "A310", "A330", "A340", "A350", "A380",
-    "747", "767", "777", "787"
+    "A300", "A310", "A330", "A330neo", "A340", "A350", "A380",
+    "747", "767", "777", "777X", "787",
+    "C-17", "L-1011", "MD-11"
   ]);
 
   const modeSelect = document.getElementById("mode-select");
@@ -280,7 +281,16 @@ document.addEventListener("DOMContentLoaded", () => {
     answers = [...new Set(answers.filter(a => a !== correctAnswer))];
 
     if (difficulty === "easy") {
-      answers = ["Airbus", "Boeing"];
+      const manufacturers = [...new Set(activeData.map(ac => ac.manufacturer))];
+      if (manufacturers.length <= 4) {
+        answers = [...manufacturers];
+      } else {
+        answers = manufacturers.filter(m => m !== correctAnswer);
+        shuffleArray(answers);
+        answers = answers.slice(0, 3);
+        answers.push(correctAnswer);
+      }
+      shuffleArray(answers);
     } else {
       shuffleArray(answers);
       answers = answers.slice(0, 3);

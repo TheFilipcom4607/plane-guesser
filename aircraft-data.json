@@ -19,6 +19,18 @@
   },
   {
     "manufacturer": "Airbus",
+    "family": "A300",
+    "model": "A300-600F",
+    "image": "images/A300-600F.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A300",
+    "model": "A300-600R",
+    "image": "images/A300-600R.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
     "family": "A310",
     "model": "A310",
     "image": "images/A310-300.jpg"
@@ -49,6 +61,12 @@
   },
   {
     "manufacturer": "Airbus",
+    "family": "A321",
+    "model": "A321P2F",
+    "image": "images/A321P2F.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
     "family": "A330",
     "model": "A330-200",
     "image": "images/A330-200.jpg"
@@ -58,6 +76,18 @@
     "family": "A330",
     "model": "A330-300",
     "image": "images/A330-300.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A330neo",
+    "model": "A330-800neo",
+    "image": "images/A330-800neo.jpg"
+  },
+  {
+    "manufacturer": "Airbus",
+    "family": "A330neo",
+    "model": "A330-900neo",
+    "image": "images/A330-900neo.jpg"
   },
   {
     "manufacturer": "Airbus",
@@ -116,6 +146,12 @@
   {
     "manufacturer": "Boeing",
     "family": "737",
+    "model": "737-400",
+    "image": "images/737-400.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "737",
     "model": "737-800",
     "image": "images/737-800.jpg"
   },
@@ -127,6 +163,30 @@
   },
   {
     "manufacturer": "Boeing",
+    "family": "737",
+    "model": "737 MAX 9",
+    "image": "images/737 MAX 9.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "737",
+    "model": "737 MAX 10",
+    "image": "images/737 MAX 10.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "747",
+    "model": "747-100",
+    "image": "images/747-100.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "747",
+    "model": "747SP",
+    "image": "images/747SP.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
     "family": "747",
     "model": "747-400",
     "image": "images/747-400.jpg"
@@ -134,8 +194,14 @@
   {
     "manufacturer": "Boeing",
     "family": "747",
-    "model": "747-8",
-    "image": "images/747-8.jpg"
+    "model": "747-8i",
+    "image": "images/747-8i.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "747",
+    "model": "747-8F",
+    "image": "images/747-8F.jpg"
   },
   {
     "manufacturer": "Boeing",
@@ -163,6 +229,12 @@
   },
   {
     "manufacturer": "Boeing",
+    "family": "777X",
+    "model": "777-9",
+    "image": "images/777-9.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
     "family": "787",
     "model": "787-8",
     "image": "images/787-8.jpg"
@@ -172,5 +244,119 @@
     "family": "787",
     "model": "787-9",
     "image": "images/787-9.jpg"
+  },
+  {
+    "manufacturer": "Boeing",
+    "family": "C-17",
+    "model": "C-17",
+    "image": "images/C-17.jpg"
+  },
+  {
+    "manufacturer": "ATR",
+    "family": "ATR 42",
+    "model": "ATR 42",
+    "image": "images/ATR 42.jpg"
+  },
+  {
+    "manufacturer": "Aerospatiale/BAC",
+    "family": "Concorde",
+    "model": "Concorde",
+    "image": "images/Concorde.jpg"
+  },
+  {
+    "manufacturer": "Bombardier",
+    "family": "CRJ",
+    "model": "CRJ-200",
+    "image": "images/CRJ-200.jpg"
+  },
+  {
+    "manufacturer": "Bombardier",
+    "family": "CRJ",
+    "model": "CRJ-700",
+    "image": "images/CRJ-700.jpg"
+  },
+  {
+    "manufacturer": "Bombardier",
+    "family": "CRJ",
+    "model": "CRJ-1000",
+    "image": "images/CRJ-1000.jpg"
+  },
+  {
+    "manufacturer": "COMAC",
+    "family": "ARJ21",
+    "model": "ARJ21",
+    "image": "images/ARJ21.jpg"
+  },
+  {
+    "manufacturer": "De Havilland Canada",
+    "family": "Dash 8",
+    "model": "Q400",
+    "image": "images/Q400.jpg"
+  },
+  {
+    "manufacturer": "Douglas",
+    "family": "DC-3",
+    "model": "DC-3",
+    "image": "images/DC-3.jpg"
+  },
+  {
+    "manufacturer": "Embraer",
+    "family": "E-Jet",
+    "model": "E175",
+    "image": "images/E175.jpg"
+  },
+  {
+    "manufacturer": "Embraer",
+    "family": "E-Jet",
+    "model": "E190",
+    "image": "images/E190.jpg"
+  },
+  {
+    "manufacturer": "Embraer",
+    "family": "E-Jet",
+    "model": "E195",
+    "image": "images/E195.jpg"
+  },
+  {
+    "manufacturer": "Embraer",
+    "family": "E-Jet E2",
+    "model": "E190-E2",
+    "image": "images/E190-E2.jpg"
+  },
+  {
+    "manufacturer": "Embraer",
+    "family": "E-Jet E2",
+    "model": "E195-E2",
+    "image": "images/E195-E2.jpg"
+  },
+  {
+    "manufacturer": "Lockheed",
+    "family": "L-1011",
+    "model": "L-1011-500",
+    "image": "images/L-1011-500.jpg"
+  },
+  {
+    "manufacturer": "McDonnell Douglas",
+    "family": "MD-11",
+    "model": "MD-11",
+    "image": "images/MD-11.jpg"
+  },
+  {
+    "manufacturer": "McDonnell Douglas",
+    "family": "MD-11",
+    "model": "MD-11F",
+    "image": "images/MD-11F.jpg"
+  },
+  {
+    "manufacturer": "Saab",
+    "family": "340",
+    "model": "Saab 340B",
+    "image": "images/Saab 340B.jpg"
+  },
+  {
+    "manufacturer": "Sukhoi",
+    "family": "SSJ",
+    "model": "SSJ 100",
+    "image": "images/SSJ 100.jpg"
   }
 ]
