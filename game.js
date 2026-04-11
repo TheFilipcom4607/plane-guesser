@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   let data = [];
+  let activeData = [];
   let currentAircraft;
   let lastAircraft;
   let difficulty;
@@ -14,6 +15,20 @@ document.addEventListener("DOMContentLoaded", () => {
   let timeLeft = 60;
   let gameOver = false;
 
+  // Streak & multiplier
+  let streak = 0;
+  let sessionBestStreak = 0;
+  let multiplier = 1;
+  let correctCount = 0;
+
+  // Lifetime stats
+  let lifeStats = JSON.parse(localStorage.getItem("planeguessrLifeStats")) || {
+    gamesPlayed: 0,
+    totalCorrect: 0,
+    totalAnswered: 0,
+    bestStreak: 0
+  };
+
   const modeSelect = document.getElementById("mode-select");
   const timeWrapper = document.getElementById("time-wrapper");
 
@@ -26,6 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   document.getElementById("high-score").innerText = highScore;
+  renderLifeStats();
 
   fetch("aircraft-data.json")
     .then(res => res.json())
@@ -35,6 +51,60 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(error => console.error("Error loading JSON:", error));
 
+  // --- Multiplier tiers ---
+  function getMultiplier(s) {
+    if (s >= 10) return 4;
+    if (s >= 6) return 3;
+    if (s >= 3) return 2;
+    return 1;
+  }
+
+  // --- Streak & multiplier UI ---
+  function updateStreak() {
+    const streakContainer = document.getElementById("streak-container");
+    const streakEl = document.getElementById("streak");
+    if (streak >= 2) {
+      streakContainer.style.display = "";
+      streakEl.innerText = "\u{1F525} " + streak;
+    } else {
+      streakContainer.style.display = "none";
+    }
+
+    multiplier = getMultiplier(streak);
+    const multContainer = document.getElementById("multiplier-container");
+    const multEl = document.getElementById("multiplier");
+    if (multiplier > 1 && mode === "timed") {
+      multContainer.style.display = "";
+      multEl.innerText = "\u00D7" + multiplier;
+    } else {
+      multContainer.style.display = "none";
+    }
+  }
+
+  // --- Lifetime stats ---
+  function renderLifeStats() {
+    document.getElementById("stat-games").innerText = lifeStats.gamesPlayed;
+    document.getElementById("stat-streak").innerText = lifeStats.bestStreak;
+    if (lifeStats.totalAnswered > 0) {
+      const pct = Math.round((lifeStats.totalCorrect / lifeStats.totalAnswered) * 100);
+      document.getElementById("stat-accuracy").innerText = pct + "%";
+    } else {
+      document.getElementById("stat-accuracy").innerText = "\u2014";
+    }
+  }
+
+  function saveLifeStats() {
+    lifeStats.gamesPlayed++;
+    lifeStats.totalCorrect += correctCount;
+    lifeStats.totalAnswered += total;
+    if (sessionBestStreak > lifeStats.bestStreak) {
+      lifeStats.bestStreak = sessionBestStreak;
+    }
+    localStorage.setItem("planeguessrLifeStats", JSON.stringify(lifeStats));
+    renderLifeStats();
+  }
+
+  // --- Game start ---
   window.startGame = function () {
     document.getElementById("start-screen").style.display = "none";
     const gameScreen = document.getElementById("game-screen");
@@ -45,12 +115,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
     difficulty = document.getElementById("difficulty-select").value;
     mode = document.getElementById("mode-select").value;
+
+    // Apply manufacturer filter
+    const filter = document.getElementById("filter-select").value;
+    activeData = filter === "all" ? data : data.filter(ac => ac.manufacturer === filter);
+
     score = 0;
     total = 0;
+    correctCount = 0;
+    streak = 0;
+    sessionBestStreak = 0;
+    multiplier = 1;
     usedAircraft = [];
     recentFamilies = [];
     gameOver = false;
     updateScore();
+    updateStreak();
 
     if (mode === "timed") {
       const selectedTime = parseInt(document.getElementById("time-select")?.value || "60", 10);
@@ -86,6 +166,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function endTimedGame() {
     gameOver = true;
+    saveLifeStats();
     const feedback = document.getElementById("feedback");
     feedback.innerText = `Time's up! Final score: ${score}`;
     feedback.classList.add("text-3xl");
@@ -99,14 +180,14 @@ document.addEventListener("DOMContentLoaded", () => {
     feedback.innerText = "";
     feedback.classList.remove("text-3xl");
 
-    if (usedAircraft.length === data.length) {
+    if (usedAircraft.length === activeData.length) {
       document.getElementById("feedback").innerText = "You've seen all aircraft! More will be added soon. GG";
       return;
     }
 
     let attempts = 0;
     do {
-      currentAircraft = data[Math.floor(Math.random() * data.length)];
+      currentAircraft = activeData[Math.floor(Math.random() * activeData.length)];
       attempts++;
       if (attempts > 100) break;
     } while (
@@ -143,7 +224,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function generateAnswers(correctAnswer) {
-    let answers = data.map(ac => {
+    let answers = activeData.map(ac => {
       if (difficulty === "easy") return ac.manufacturer;
       if (difficulty === "normal") return ac.family;
       return ac.model;
@@ -193,8 +274,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     if (choice === correctAnswer) {
-      feedback.innerHTML = '<span style="color:#4ade80;">&#10003; Correct!</span>';
-      score++;
+      correctCount++;
+      streak++;
+      if (streak > sessionBestStreak) sessionBestStreak = streak;
+      updateStreak();
+
+      const points = (mode === "timed") ? multiplier : 1;
+      score += points;
+
+      if (points > 1) {
+        feedback.innerHTML = `<span style="color:#4ade80;">&#10003; Correct!</span> <span style="color:#eab308;">+${points}</span>`;
+      } else {
+        feedback.innerHTML = '<span style="color:#4ade80;">&#10003; Correct!</span>';
+      }
+
       const scoreEl = document.getElementById("score");
       scoreEl.classList.remove("score-pop");
       void scoreEl.offsetWidth;
@@ -202,6 +295,8 @@ document.addEventListener("DOMContentLoaded", () => {
       updateScore();
       setTimeout(() => nextRound(), mode === "timed" ? 400 : 1000);
     } else {
+      streak = 0;
+      updateStreak();
       feedback.innerHTML = `<span style="color:#f87171;">&#10007; Wrong!</span> <span style="color:#888;margin-left:4px;">The answer was</span> <span style="color:#eaeaea;font-weight:700;">${correctAnswer}</span>`;
       updateScore();
       setTimeout(() => nextRound(), mode === "timed" ? 600 : 2500);
@@ -220,6 +315,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.resetGame = function () {
+    if (total > 0 && !gameOver) {
+      saveLifeStats();
+    }
     document.getElementById("game-screen").style.display = "none";
     const startScreen = document.getElementById("start-screen");
     startScreen.style.display = "block";

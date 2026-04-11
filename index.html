@@ -185,6 +185,15 @@
           </div>
 
           <div>
+            <label class="block text-sm text-gray-400 mb-1">Filter</label>
+            <select id="filter-select" class="w-full">
+              <option value="all">All Aircraft</option>
+              <option value="Airbus">Airbus Only</option>
+              <option value="Boeing">Boeing Only</option>
+            </select>
+          </div>
+
+          <div>
             <label class="block text-sm text-gray-400 mb-1">Game Mode</label>
             <select id="mode-select" class="w-full">
               <option value="normal">Normal Mode</option>
@@ -208,16 +217,30 @@
           <button onclick="startGame()" disabled>Start Game</button>
           <p class="text-sm text-gray-500 mt-3">Press 1–4 during gameplay to quick-answer</p>
         </div>
+
+        <!-- Lifetime stats -->
+        <div id="life-stats" class="text-sm text-gray-500 flex items-center justify-center gap-4">
+          <span>Games: <span id="stat-games" class="text-gray-400">0</span></span>
+          <span>Accuracy: <span id="stat-accuracy" class="text-gray-400">—</span></span>
+          <span>Best Streak: <span id="stat-streak" class="text-gray-400">0</span></span>
+        </div>
       </div>
 
       <!-- Game Screen -->
       <div id="game-screen" style="display:none;" class="screen-fade space-y-6">
 
         <!-- Score row -->
-        <div class="flex items-center justify-center gap-6 text-base">
+        <div class="flex items-center justify-center gap-6 text-base flex-wrap">
           <div>Score: <span id="score" class="font-bold text-[#40E0D0]">0</span>/<span id="total">0</span></div>
           <div class="text-gray-500">|</div>
           <div>Best: <span id="high-score" class="font-bold">0</span></div>
+          <div id="streak-container" style="display:none;">
+            <span class="text-gray-500">|</span>
+            <span id="streak" class="font-bold ml-2 text-orange-400"></span>
+          </div>
+          <div id="multiplier-container" style="display:none;">
+            <span id="multiplier" class="font-bold text-yellow-400"></span>
+          </div>
           <div id="timer-container" style="display: none;">
             <span class="text-gray-500">|</span>
             <span id="timer" class="font-bold ml-2">60s</span>
