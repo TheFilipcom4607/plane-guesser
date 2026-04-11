@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let mode;
   let score = 0;
   let total = 0;
-  let highScore = localStorage.getItem("planeguessrHighScore") || 0;
+  let highScore = 0;
   let usedAircraft = [];
   let recentFamilies = [];
   const MAX_RECENT_FAMILIES = 5;
@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
     filterWrapper.style.display = "none";
   }
 
-  document.getElementById("high-score").innerText = highScore;
   renderLifeStats();
 
   fetch("aircraft-data.json")
@@ -148,6 +147,11 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       activeData = data.filter(ac => ac.manufacturer === filter);
     }
+
+    // Load mode-specific high score
+    const hsKey = mode === "timed" ? "planeguessrHighScoreTimed" : "planeguessrHighScore";
+    highScore = parseInt(localStorage.getItem(hsKey)) || 0;
+    document.getElementById("high-score").innerText = highScore;
 
     score = 0;
     total = 0;
@@ -348,7 +352,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (score > highScore) {
       highScore = score;
-      localStorage.setItem("planeguessrHighScore", highScore);
+      const hsKey = mode === "timed" ? "planeguessrHighScoreTimed" : "planeguessrHighScore";
+      localStorage.setItem(hsKey, highScore);
       document.getElementById("high-score").innerText = highScore;
     }
   }
