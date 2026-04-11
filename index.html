@@ -98,6 +98,13 @@
       background-position: right 14px center !important;
     }
 
+    @media (max-width: 480px) {
+      select {
+        font-size: 0.85rem !important;
+        padding: 10px 34px 10px 12px !important;
+      }
+    }
+
     select:hover, select:focus {
       border-color: #eaeaea !important;
       outline: none !important;
@@ -195,6 +202,8 @@
                 <option value="Bombardier">Bombardier</option>
                 <option value="widebody">Widebody</option>
                 <option value="narrowbody">Narrowbody</option>
+                <option value="cargo">Cargo</option>
+                <option value="passenger">Passenger</option>
               </select>
             </div>
 
@@ -303,6 +312,6 @@
     </p>
   </footer>
 
-  <script src="game.js?v=3"></script>
+  <script src="game.js?v=4"></script>
 </body>
 </html>

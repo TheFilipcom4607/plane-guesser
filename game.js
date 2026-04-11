@@ -36,6 +36,11 @@ document.addEventListener("DOMContentLoaded", () => {
     "C-17", "L-1011", "MD-11"
   ]);
 
+  // Cargo/freighter aircraft by model
+  const cargoModels = new Set([
+    "A300-600F", "A321P2F", "747-8F", "MD-11F", "C-17"
+  ]);
+
   const modeSelect = document.getElementById("mode-select");
   const timeWrapper = document.getElementById("time-wrapper");
   const difficultySelect = document.getElementById("difficulty-select");
@@ -160,6 +165,10 @@ document.addEventListener("DOMContentLoaded", () => {
       activeData = data.filter(ac => widebodyFamilies.has(ac.family));
     } else if (filter === "narrowbody") {
       activeData = data.filter(ac => !widebodyFamilies.has(ac.family));
+    } else if (filter === "cargo") {
+      activeData = data.filter(ac => cargoModels.has(ac.model));
+    } else if (filter === "passenger") {
+      activeData = data.filter(ac => !cargoModels.has(ac.model));
     } else {
       activeData = data.filter(ac => ac.manufacturer === filter);
     }
