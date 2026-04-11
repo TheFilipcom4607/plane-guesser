@@ -41,8 +41,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const filterWrapper = document.getElementById("filter-wrapper");
   const filterSelect = document.getElementById("filter-select");
 
+  function updateSettingsGrid() {
+    const grid = document.getElementById("settings-grid");
+    const items = grid.children;
+    for (const item of items) {
+      item.style.gridColumn = "";
+    }
+    const visible = [...items].filter(i => i.style.display !== "none");
+    if (visible.length % 2 === 1) {
+      visible[visible.length - 1].style.gridColumn = "1 / -1";
+    }
+  }
+
   modeSelect.addEventListener("change", () => {
-    timeWrapper.style.display = modeSelect.value === "timed" ? "block" : "none";
+    timeWrapper.style.display = modeSelect.value === "timed" ? "" : "none";
+    updateSettingsGrid();
   });
 
   difficultySelect.addEventListener("change", () => {
@@ -52,6 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       filterWrapper.style.display = "";
     }
+    updateSettingsGrid();
   });
 
   if (modeSelect.value !== "timed") {
@@ -60,6 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (difficultySelect.value === "easy") {
     filterWrapper.style.display = "none";
   }
+  updateSettingsGrid();
 
   renderLifeStats();
 

@@ -167,64 +167,77 @@
     <div class="w-full max-w-2xl lg:max-w-4xl text-center space-y-10">
 
       <!-- Start Screen -->
-      <div id="start-screen" class="screen-fade space-y-6">
-        <div class="space-y-2">
+      <div id="start-screen" class="screen-fade space-y-8">
+        <div class="space-y-3">
           <h1 class="text-5xl md:text-7xl font-extrabold border-0">PlaneGuessr</h1>
-          <p class="text-xl text-gray-400">A simple game to test your ability to recognize aircraft!</p>
+          <p class="text-lg text-gray-500">Test your aircraft recognition skills</p>
         </div>
 
-        <!-- Settings card -->
-        <div class="border border-[#333] rounded-lg p-6 max-w-sm mx-auto space-y-4 text-left">
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Difficulty</label>
-            <select id="difficulty-select" class="w-full">
-              <option value="easy">Easy (Airbus/Boeing)</option>
-              <option value="normal">Normal (Aircraft Family)</option>
-              <option value="hard">Hard (Exact Model)</option>
-            </select>
-          </div>
+        <!-- Settings grid -->
+        <div class="max-w-md mx-auto space-y-3 text-left">
+          <div id="settings-grid" class="grid grid-cols-2 gap-3">
+            <div class="bg-[#1a1a1a] rounded-lg p-4">
+              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-2">Difficulty</label>
+              <select id="difficulty-select" class="w-full">
+                <option value="easy">Easy</option>
+                <option value="normal">Normal</option>
+                <option value="hard">Hard</option>
+              </select>
+            </div>
 
-          <div id="filter-wrapper">
-            <label class="block text-sm text-gray-400 mb-1">Filter</label>
-            <select id="filter-select" class="w-full">
-              <option value="all">All Aircraft</option>
-              <option value="Airbus">Airbus Only</option>
-              <option value="Boeing">Boeing Only</option>
-              <option value="widebody">Widebody Only</option>
-              <option value="narrowbody">Narrowbody Only</option>
-            </select>
-          </div>
+            <div id="filter-wrapper" class="bg-[#1a1a1a] rounded-lg p-4">
+              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-2">Filter</label>
+              <select id="filter-select" class="w-full">
+                <option value="all">All Aircraft</option>
+                <option value="Airbus">Airbus Only</option>
+                <option value="Boeing">Boeing Only</option>
+                <option value="widebody">Widebody Only</option>
+                <option value="narrowbody">Narrowbody Only</option>
+              </select>
+            </div>
 
-          <div>
-            <label class="block text-sm text-gray-400 mb-1">Game Mode</label>
-            <select id="mode-select" class="w-full">
-              <option value="normal">Normal Mode</option>
-              <option value="timed">Timed Mode</option>
-            </select>
-          </div>
+            <div class="bg-[#1a1a1a] rounded-lg p-4">
+              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-2">Game Mode</label>
+              <select id="mode-select" class="w-full">
+                <option value="normal">Normal</option>
+                <option value="timed">Timed</option>
+              </select>
+            </div>
 
-          <div id="time-wrapper" style="display: none;">
-            <label class="block text-sm text-gray-400 mb-1">Time Limit</label>
-            <select id="time-select" class="w-full">
-              <option value="15">15s Blitz</option>
-              <option value="30">30s Fast</option>
-              <option value="45">45s Quick</option>
-              <option value="60" selected>60s Normal</option>
-              <option value="90">90s Prolonged</option>
-            </select>
+            <div id="time-wrapper" class="bg-[#1a1a1a] rounded-lg p-4" style="display: none;">
+              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-2">Time Limit</label>
+              <select id="time-select" class="w-full">
+                <option value="15">15s Blitz</option>
+                <option value="30">30s Fast</option>
+                <option value="45">45s Quick</option>
+                <option value="60" selected>60s Normal</option>
+                <option value="90">90s Prolonged</option>
+              </select>
+            </div>
           </div>
         </div>
 
         <div>
           <button onclick="startGame()" disabled>Start Game</button>
-          <p class="text-sm text-gray-500 mt-3">Press 1–4 during gameplay to quick-answer</p>
+          <p class="text-sm text-gray-600 mt-3">Press 1–4 to quick-answer</p>
         </div>
 
         <!-- Lifetime stats -->
-        <div id="life-stats" class="text-sm text-gray-500 flex items-center justify-center gap-4">
-          <span>Games: <span id="stat-games" class="text-gray-400">0</span></span>
-          <span>Accuracy: <span id="stat-accuracy" class="text-gray-400">—</span></span>
-          <span>Best Streak: <span id="stat-streak" class="text-gray-400">0</span></span>
+        <div id="life-stats" class="max-w-xs mx-auto">
+          <div class="grid grid-cols-3 gap-3">
+            <div class="bg-[#1a1a1a] rounded-lg py-3 px-2 text-center">
+              <div id="stat-games" class="text-xl font-bold text-[#eaeaea]">0</div>
+              <div class="text-xs text-gray-600 mt-1">Games</div>
+            </div>
+            <div class="bg-[#1a1a1a] rounded-lg py-3 px-2 text-center">
+              <div id="stat-accuracy" class="text-xl font-bold text-[#eaeaea]">—</div>
+              <div class="text-xs text-gray-600 mt-1">Accuracy</div>
+            </div>
+            <div class="bg-[#1a1a1a] rounded-lg py-3 px-2 text-center">
+              <div id="stat-streak" class="text-xl font-bold text-[#eaeaea]">0</div>
+              <div class="text-xs text-gray-600 mt-1">Best Streak</div>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -288,6 +301,6 @@
     </p>
   </footer>
 
-  <script src="game.js"></script>
+  <script src="game.js?v=2"></script>
 </body>
 </html>
