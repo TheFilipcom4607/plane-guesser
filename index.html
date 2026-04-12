@@ -176,9 +176,39 @@
       background: #40E0D0 !important;
       color: #121212 !important;
     }
+
+    /* Sound toggle — corner button */
+    #sound-toggle-btn {
+      position: fixed !important;
+      top: 1rem !important;
+      right: 1rem !important;
+      z-index: 100 !important;
+      background: transparent !important;
+      border: none !important;
+      padding: 0.35rem !important;
+      font-size: 1.4rem !important;
+      line-height: 1 !important;
+      opacity: 0.45;
+      border-radius: 6px !important;
+      transition: opacity 0.2s ease !important;
+      letter-spacing: 0 !important;
+      font-weight: normal !important;
+    }
+    #sound-toggle-btn:hover {
+      opacity: 1;
+      background: rgba(255,255,255,0.07) !important;
+      transform: none !important;
+      box-shadow: none !important;
+      color: #eaeaea !important;
+    }
+    #sound-toggle-btn:active {
+      transform: scale(0.9) !important;
+      box-shadow: none !important;
+    }
   </style>
 </head>
 <body class="bg-[#121212] text-[#eaeaea] text-lg">
+  <button id="sound-toggle-btn" title="Toggle sound" aria-label="Toggle sound">🔇</button>
   <main class="flex items-center justify-center px-4">
     <div class="w-full max-w-2xl lg:max-w-4xl text-center space-y-10">
 
@@ -235,13 +265,6 @@
               </select>
             </div>
 
-            <div class="bg-[#1a1a1a] rounded-lg p-4">
-              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-2">Sound</label>
-              <select id="sound-select" class="w-full">
-                <option value="off" selected>Off</option>
-                <option value="on">On</option>
-              </select>
-            </div>
           </div>
         </div>
 

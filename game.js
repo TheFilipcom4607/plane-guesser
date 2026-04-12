@@ -86,13 +86,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   updateSettingsGrid();
 
-  // Initialize sound
+  // Initialize sound — corner toggle button
   if (window.SoundManager) {
     SoundManager.init();
-    const soundSelect = document.getElementById("sound-select");
-    soundSelect.value = SoundManager.isEnabled() ? "on" : "off";
-    soundSelect.addEventListener("change", () => {
-      SoundManager.setEnabled(soundSelect.value === "on");
+    const soundBtn = document.getElementById("sound-toggle-btn");
+    soundBtn.textContent = SoundManager.isEnabled() ? "🔊" : "🔇";
+    soundBtn.addEventListener("click", () => {
+      const next = !SoundManager.isEnabled();
+      SoundManager.setEnabled(next);
+      soundBtn.textContent = next ? "🔊" : "🔇";
     });
   }
 
@@ -634,16 +636,25 @@ document.addEventListener("DOMContentLoaded", () => {
     nextRound();
   };
 
+  function getDailyQuip(correct) {
+    if (correct === 10) return "Perfect score! Born to fly. \u{1F3C6}";
+    if (correct >= 8)   return "Strong work! You know your planes. \u2708\uFE0F";
+    if (correct >= 6)   return "Not bad for a passenger! \u{1F6E9}\uFE0F";
+    if (correct >= 4)   return "Tricky skies today. \u{1F605}";
+    return "Every pilot starts somewhere. \u{1F6EB}";
+  }
+
   window.shareDaily = function () {
     const state = JSON.parse(localStorage.getItem("planeguessrDaily"));
     if (!state) return;
     const dayNum = getDailyNumber();
     const grid = state.answers.map(a => a ? "\u{1F7E9}" : "\u{1F7E5}").join("");
-    const text = `PlaneGuessr Daily #${dayNum} \u2014 ${state.correctCount}/10\n${grid}\nplaneguessr.com`;
+    const quip = getDailyQuip(state.correctCount);
+    const text = `\u2708\uFE0F PlaneGuessr Daily #${dayNum}\n${grid} ${state.correctCount}/10\n${quip}\nplaneguessr.com`;
     navigator.clipboard.writeText(text).then(() => {
       const btn = document.getElementById("share-btn");
       if (btn) {
-        btn.innerText = "Copied!";
+        btn.innerText = "Copied! \u2713";
         setTimeout(() => { btn.innerText = "Share Result"; }, 2000);
       }
     });
