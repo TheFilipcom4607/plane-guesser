@@ -167,6 +167,15 @@
     .timer-bar {
       transition: width 1s linear;
     }
+
+    #daily-btn {
+      border-color: #40E0D0 !important;
+      color: #40E0D0 !important;
+    }
+    #daily-btn:hover:not(:disabled) {
+      background: #40E0D0 !important;
+      color: #121212 !important;
+    }
   </style>
 </head>
 <body class="bg-[#121212] text-[#eaeaea] text-lg">
@@ -225,17 +234,26 @@
                 <option value="90">90s Prolonged</option>
               </select>
             </div>
+
+            <div class="bg-[#1a1a1a] rounded-lg p-4">
+              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-2">Sound</label>
+              <select id="sound-select" class="w-full">
+                <option value="off" selected>Off</option>
+                <option value="on">On</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        <div>
+        <div class="flex flex-col items-center gap-3">
           <button onclick="startGame()" disabled>Start Game</button>
-          <p class="text-sm text-gray-600 mt-3">Press 1–4 to quick-answer</p>
+          <button onclick="startDaily()" disabled id="daily-btn" class="text-base">Daily Challenge</button>
+          <p class="text-sm text-gray-600 mt-1">Press 1–4 to quick-answer</p>
         </div>
 
         <!-- Lifetime stats -->
-        <div id="life-stats" class="max-w-xs mx-auto">
-          <div class="grid grid-cols-3 gap-3">
+        <div id="life-stats" class="max-w-md mx-auto">
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
             <div class="bg-[#1a1a1a] rounded-lg py-3 px-2 text-center">
               <div id="stat-games" class="text-xl font-bold text-[#eaeaea]">0</div>
               <div class="text-xs text-gray-600 mt-1">Games</div>
@@ -247,6 +265,10 @@
             <div class="bg-[#1a1a1a] rounded-lg py-3 px-2 text-center">
               <div id="stat-streak" class="text-xl font-bold text-[#eaeaea]">0</div>
               <div class="text-xs text-gray-600 mt-1">Best Streak</div>
+            </div>
+            <div class="bg-[#1a1a1a] rounded-lg py-3 px-2 text-center">
+              <div id="stat-daily-streak" class="text-xl font-bold text-[#eaeaea]">0</div>
+              <div class="text-xs text-gray-600 mt-1">Daily Streak</div>
             </div>
           </div>
         </div>
@@ -312,6 +334,7 @@
     </p>
   </footer>
 
-  <script src="game.js?v=4"></script>
+  <script src="sounds.js"></script>
+  <script src="game.js?v=5"></script>
 </body>
 </html>

@@ -21,6 +21,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let multiplier = 1;
   let correctCount = 0;
 
+  // Daily challenge
+  let isDaily = false;
+  let dailyAnswers = [];
+
   // Lifetime stats
   let lifeStats = JSON.parse(localStorage.getItem("planeguessrLifeStats")) || {
     gamesPlayed: 0,
@@ -82,6 +86,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   updateSettingsGrid();
 
+  // Initialize sound
+  if (window.SoundManager) {
+    SoundManager.init();
+    const soundSelect = document.getElementById("sound-select");
+    soundSelect.value = SoundManager.isEnabled() ? "on" : "off";
+    soundSelect.addEventListener("change", () => {
+      SoundManager.setEnabled(soundSelect.value === "on");
+    });
+  }
+
   renderLifeStats();
 
   fetch("aircraft-data.json")
@@ -89,6 +103,8 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(json => {
       data = json;
       document.querySelector('button[onclick="startGame()"]')?.removeAttribute("disabled");
+      document.getElementById("daily-btn")?.removeAttribute("disabled");
+      updateDailyButton();
     })
     .catch(error => console.error("Error loading JSON:", error));
 
@@ -132,6 +148,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       document.getElementById("stat-accuracy").innerText = "\u2014";
     }
+    const streakData = JSON.parse(localStorage.getItem("planeguessrDailyStreak") || '{"current":0}');
+    document.getElementById("stat-daily-streak").innerText = streakData.current;
   }
 
   function saveLifeStats() {
@@ -225,6 +243,9 @@ document.addEventListener("DOMContentLoaded", () => {
   function endTimedGame() {
     gameOver = true;
     saveLifeStats();
+    if (window.SoundManager) {
+      SoundManager.play(total > 0 && correctCount / total >= 0.7 ? "gameEndGood" : "gameEndBad");
+    }
     const feedback = document.getElementById("feedback");
     feedback.innerText = `Time's up! ${correctCount}/${total} correct — ${score} pts`;
     feedback.classList.add("text-3xl");
@@ -239,7 +260,14 @@ document.addEventListener("DOMContentLoaded", () => {
     feedback.classList.remove("text-3xl");
 
     if (usedAircraft.length === activeData.length) {
-      document.getElementById("feedback").innerText = "You've seen all aircraft! More will be added soon. GG";
+      if (isDaily) {
+        endDailyGame();
+      } else {
+        document.getElementById("feedback").innerText = "You've seen all aircraft! More will be added soon. GG";
+        if (window.SoundManager) {
+          SoundManager.play(total > 0 && correctCount / total >= 0.7 ? "gameEndGood" : "gameEndBad");
+        }
+      }
       return;
     }
 
@@ -345,6 +373,11 @@ document.addEventListener("DOMContentLoaded", () => {
       streak++;
       if (streak > sessionBestStreak) sessionBestStreak = streak;
       updateStreak();
+      if (isDaily) dailyAnswers.push(true);
+      if (window.SoundManager) {
+        if ([3, 6, 10].includes(streak)) SoundManager.play("milestone");
+        else SoundManager.play("correct");
+      }
 
       const points = (mode === "timed") ? multiplier : 1;
       score += points;
@@ -370,6 +403,8 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       streak = 0;
       updateStreak();
+      if (isDaily) dailyAnswers.push(false);
+      if (window.SoundManager) SoundManager.play("wrong");
       feedback.innerHTML = `<span style="color:#f87171;">&#10007; Wrong!</span> <span style="color:#888;margin-left:4px;">The answer was</span> <span style="color:#eaeaea;font-weight:700;">${correctAnswer}</span>`;
       updateScore();
       setTimeout(() => nextRound(), mode === "timed" ? 600 : 2500);
@@ -393,6 +428,15 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   window.resetGame = function () {
+    if (isDaily && total > 0 && !gameOver) {
+      // Abandoning daily — fill remaining as wrong, save as completed
+      while (dailyAnswers.length < 10) dailyAnswers.push(false);
+      const today = getTodayString();
+      localStorage.setItem("planeguessrDaily", JSON.stringify({
+        date: today, answers: dailyAnswers, correctCount: correctCount, completed: true
+      }));
+      updateDailyStreak(today);
+    }
     if (total > 0 && !gameOver) {
       saveLifeStats();
     }
@@ -404,6 +448,11 @@ document.addEventListener("DOMContentLoaded", () => {
     startScreen.classList.add("screen-fade");
     clearInterval(timerInterval);
     gameOver = false;
+    isDaily = false;
+    dailyAnswers = [];
+    document.getElementById("settings-grid").style.display = "";
+    updateSettingsGrid();
+    updateDailyButton();
   };
 
   function shuffleArray(array) {
@@ -412,6 +461,193 @@ document.addEventListener("DOMContentLoaded", () => {
       [array[i], array[j]] = [array[j], array[i]];
     }
   }
+
+  // --- Seeded PRNG (for daily challenge) ---
+  function mulberry32(a) {
+    return function () {
+      a |= 0; a = a + 0x6D2B79F5 | 0;
+      var t = Math.imul(a ^ a >>> 15, 1 | a);
+      t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+      return ((t ^ t >>> 14) >>> 0) / 4294967296;
+    };
+  }
+
+  function hashString(str) {
+    let hash = 0;
+    for (let i = 0; i < str.length; i++) {
+      hash = ((hash << 5) - hash) + str.charCodeAt(i);
+      hash |= 0;
+    }
+    return Math.abs(hash);
+  }
+
+  function getTodayString() {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+  }
+
+  function getDailyNumber() {
+    const epoch = new Date(2025, 0, 1);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return Math.floor((today - epoch) / 86400000);
+  }
+
+  function getDailyAircraft(allData) {
+    const seed = hashString(getTodayString());
+    const rng = mulberry32(seed);
+    const shuffled = allData.slice();
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, 10);
+  }
+
+  // --- Daily challenge functions ---
+  function updateDailyButton() {
+    const btn = document.getElementById("daily-btn");
+    if (!btn) return;
+    const saved = JSON.parse(localStorage.getItem("planeguessrDaily") || "null");
+    if (saved && saved.date === getTodayString() && saved.completed) {
+      btn.innerText = "Daily \u2014 Completed \u2713";
+    } else {
+      btn.innerText = "Daily Challenge";
+    }
+  }
+
+  function updateDailyStreak(today) {
+    const stored = JSON.parse(localStorage.getItem("planeguessrDailyStreak") || '{"current":0,"lastDate":""}');
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayStr = `${yesterday.getFullYear()}-${String(yesterday.getMonth() + 1).padStart(2, "0")}-${String(yesterday.getDate()).padStart(2, "0")}`;
+
+    if (stored.lastDate === yesterdayStr) {
+      stored.current++;
+    } else if (stored.lastDate !== today) {
+      stored.current = 1;
+    }
+    stored.lastDate = today;
+    localStorage.setItem("planeguessrDailyStreak", JSON.stringify(stored));
+    renderLifeStats();
+  }
+
+  function showDailyResults(state) {
+    document.getElementById("start-screen").style.display = "none";
+    const gameScreen = document.getElementById("game-screen");
+    gameScreen.style.display = "block";
+    gameScreen.classList.remove("screen-fade");
+    void gameScreen.offsetWidth;
+    gameScreen.classList.add("screen-fade");
+
+    const dayNum = getDailyNumber();
+    const grid = state.answers.map(a => a ? "\u{1F7E9}" : "\u{1F7E5}").join("");
+    const streakData = JSON.parse(localStorage.getItem("planeguessrDailyStreak") || '{"current":0}');
+
+    const feedback = document.getElementById("feedback");
+    feedback.classList.add("text-3xl");
+    feedback.innerHTML =
+      `<div class="space-y-4">` +
+        `<div class="text-2xl font-bold">Daily #${dayNum} \u2014 ${state.correctCount}/10</div>` +
+        `<div class="text-3xl tracking-widest">${grid}</div>` +
+        (streakData.current > 0 ? `<div class="text-sm text-orange-400">\u{1F525} ${streakData.current}-day streak</div>` : "") +
+        `<button onclick="shareDaily()" id="share-btn" class="text-sm" style="padding:8px 20px !important;">Share Result</button>` +
+      `</div>`;
+
+    document.getElementById("choices").innerHTML = "";
+    document.getElementById("timer-container").style.display = "none";
+    document.getElementById("timer-bar-wrapper").style.display = "none";
+    document.getElementById("points-container").style.display = "none";
+
+    // Hide score row content for clean look — show only feedback + restart
+    document.getElementById("correct-count").innerText = state.correctCount;
+    document.getElementById("total").innerText = "10";
+  }
+
+  function endDailyGame() {
+    gameOver = true;
+    saveLifeStats();
+
+    const today = getTodayString();
+    const dailyState = {
+      date: today,
+      answers: dailyAnswers,
+      correctCount: correctCount,
+      completed: true
+    };
+    localStorage.setItem("planeguessrDaily", JSON.stringify(dailyState));
+    updateDailyStreak(today);
+
+    if (window.SoundManager) {
+      SoundManager.play(correctCount / 10 >= 0.7 ? "gameEndGood" : "gameEndBad");
+    }
+
+    showDailyResults(dailyState);
+  }
+
+  window.startDaily = function () {
+    // Check if already completed today
+    const saved = JSON.parse(localStorage.getItem("planeguessrDaily") || "null");
+    if (saved && saved.date === getTodayString() && saved.completed) {
+      showDailyResults(saved);
+      return;
+    }
+
+    isDaily = true;
+    dailyAnswers = [];
+
+    // Hide settings grid during daily
+    document.getElementById("settings-grid").style.display = "none";
+
+    // Switch screens
+    document.getElementById("start-screen").style.display = "none";
+    const gameScreen = document.getElementById("game-screen");
+    gameScreen.style.display = "block";
+    gameScreen.classList.remove("screen-fade");
+    void gameScreen.offsetWidth;
+    gameScreen.classList.add("screen-fade");
+
+    // Force normal difficulty, normal mode
+    difficulty = "normal";
+    mode = "normal";
+
+    // Generate seeded aircraft for today
+    activeData = getDailyAircraft(data);
+
+    // Standard game init
+    highScore = 0;
+    document.getElementById("high-score").innerText = "\u2014";
+    score = 0;
+    total = 0;
+    correctCount = 0;
+    streak = 0;
+    sessionBestStreak = 0;
+    multiplier = 1;
+    usedAircraft = [];
+    recentFamilies = [];
+    gameOver = false;
+    updateScore();
+    updateStreak();
+    document.getElementById("timer-container").style.display = "none";
+    document.getElementById("timer-bar-wrapper").style.display = "none";
+
+    nextRound();
+  };
+
+  window.shareDaily = function () {
+    const state = JSON.parse(localStorage.getItem("planeguessrDaily"));
+    if (!state) return;
+    const dayNum = getDailyNumber();
+    const grid = state.answers.map(a => a ? "\u{1F7E9}" : "\u{1F7E5}").join("");
+    const text = `PlaneGuessr Daily #${dayNum} \u2014 ${state.correctCount}/10\n${grid}\nplaneguessr.com`;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById("share-btn");
+      if (btn) {
+        btn.innerText = "Copied!";
+        setTimeout(() => { btn.innerText = "Share Result"; }, 2000);
+      }
+    });
+  };
 
   document.addEventListener("keydown", (e) => {
     const key = e.key;
