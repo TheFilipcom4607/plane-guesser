@@ -101,7 +101,15 @@
     @media (max-width: 480px) {
       select {
         font-size: 0.85rem !important;
-        padding: 10px 34px 10px 12px !important;
+        padding: 8px 30px 8px 10px !important;
+      }
+      button {
+        padding: 10px 24px !important;
+        font-size: 0.95rem !important;
+      }
+      #choices button {
+        padding: 10px 10px !important;
+        font-size: 0.9rem !important;
       }
     }
 
@@ -209,21 +217,21 @@
 </head>
 <body class="bg-[#121212] text-[#eaeaea] text-lg">
   <button id="sound-toggle-btn" title="Toggle sound" aria-label="Toggle sound">🔇</button>
-  <main class="flex items-center justify-center px-4">
-    <div class="w-full max-w-2xl lg:max-w-4xl text-center space-y-10">
+  <main class="flex items-start lg:items-center justify-center px-4 pt-6 lg:pt-0">
+    <div class="w-full max-w-2xl lg:max-w-4xl text-center space-y-5 lg:space-y-10">
 
       <!-- Start Screen -->
-      <div id="start-screen" class="screen-fade space-y-8">
-        <div class="space-y-3">
-          <h1 class="text-5xl md:text-7xl font-extrabold border-0">PlaneGuessr</h1>
-          <p class="text-lg text-gray-500">Test your aircraft recognition skills</p>
+      <div id="start-screen" class="screen-fade space-y-4 lg:space-y-8">
+        <div class="space-y-1">
+          <h1 class="text-4xl md:text-7xl font-extrabold border-0">PlaneGuessr</h1>
+          <p class="text-sm text-gray-500">Test your aircraft recognition skills</p>
         </div>
 
         <!-- Settings grid -->
-        <div class="max-w-md mx-auto space-y-3 text-left">
-          <div id="settings-grid" class="grid grid-cols-2 gap-3">
-            <div class="bg-[#1a1a1a] rounded-lg p-4">
-              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-2">Difficulty</label>
+        <div class="max-w-md mx-auto space-y-2 text-left">
+          <div id="settings-grid" class="grid grid-cols-2 gap-2">
+            <div class="bg-[#1a1a1a] rounded-lg p-3">
+              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-1.5">Difficulty</label>
               <select id="difficulty-select" class="w-full">
                 <option value="easy">Manufacturer</option>
                 <option value="normal" selected>Family</option>
@@ -231,8 +239,8 @@
               </select>
             </div>
 
-            <div id="filter-wrapper" class="bg-[#1a1a1a] rounded-lg p-4">
-              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-2">Filter</label>
+            <div id="filter-wrapper" class="bg-[#1a1a1a] rounded-lg p-3">
+              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-1.5">Filter</label>
               <select id="filter-select" class="w-full">
                 <option value="all">All Aircraft</option>
                 <option value="Airbus">Airbus</option>
@@ -246,16 +254,16 @@
               </select>
             </div>
 
-            <div class="bg-[#1a1a1a] rounded-lg p-4">
-              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-2">Game Mode</label>
+            <div class="bg-[#1a1a1a] rounded-lg p-3">
+              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-1.5">Game Mode</label>
               <select id="mode-select" class="w-full">
                 <option value="normal">Normal</option>
                 <option value="timed" selected>Timed</option>
               </select>
             </div>
 
-            <div id="time-wrapper" class="bg-[#1a1a1a] rounded-lg p-4">
-              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-2">Time Limit</label>
+            <div id="time-wrapper" class="bg-[#1a1a1a] rounded-lg p-3">
+              <label class="block text-xs uppercase tracking-wider text-gray-500 mb-1.5">Time Limit</label>
               <select id="time-select" class="w-full">
                 <option value="15">15s Blitz</option>
                 <option value="30" selected>30s Fast</option>
@@ -268,54 +276,54 @@
           </div>
         </div>
 
-        <div class="flex flex-col items-center gap-3">
+        <div class="flex flex-col items-center gap-2">
           <button onclick="startGame()" disabled>Start Game</button>
           <button onclick="startDaily()" disabled id="daily-btn" class="text-base">Daily Challenge</button>
-          <p class="text-sm text-gray-600 mt-1">Press 1–4 to quick-answer</p>
+          <p class="text-xs text-gray-600 mt-0.5">Press 1–4 to quick-answer</p>
         </div>
 
         <!-- Lifetime stats -->
         <div id="life-stats" class="max-w-md mx-auto">
-          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            <div class="bg-[#1a1a1a] rounded-lg py-3 px-2 text-center">
-              <div id="stat-games" class="text-xl font-bold text-[#eaeaea]">0</div>
-              <div class="text-xs text-gray-600 mt-1">Games</div>
+          <div class="grid grid-cols-4 gap-2">
+            <div class="bg-[#1a1a1a] rounded-lg py-2 px-1 text-center">
+              <div id="stat-games" class="text-lg font-bold text-[#eaeaea]">0</div>
+              <div class="text-xs text-gray-600 mt-0.5">Games</div>
             </div>
-            <div class="bg-[#1a1a1a] rounded-lg py-3 px-2 text-center">
-              <div id="stat-accuracy" class="text-xl font-bold text-[#eaeaea]">—</div>
-              <div class="text-xs text-gray-600 mt-1">Accuracy</div>
+            <div class="bg-[#1a1a1a] rounded-lg py-2 px-1 text-center">
+              <div id="stat-accuracy" class="text-lg font-bold text-[#eaeaea]">—</div>
+              <div class="text-xs text-gray-600 mt-0.5">Accuracy</div>
             </div>
-            <div class="bg-[#1a1a1a] rounded-lg py-3 px-2 text-center">
-              <div id="stat-streak" class="text-xl font-bold text-[#eaeaea]">0</div>
-              <div class="text-xs text-gray-600 mt-1">Best Streak</div>
+            <div class="bg-[#1a1a1a] rounded-lg py-2 px-1 text-center">
+              <div id="stat-streak" class="text-lg font-bold text-[#eaeaea]">0</div>
+              <div class="text-xs text-gray-600 mt-0.5">Best Streak</div>
             </div>
-            <div class="bg-[#1a1a1a] rounded-lg py-3 px-2 text-center">
-              <div id="stat-daily-streak" class="text-xl font-bold text-[#eaeaea]">0</div>
-              <div class="text-xs text-gray-600 mt-1">Daily Streak</div>
+            <div class="bg-[#1a1a1a] rounded-lg py-2 px-1 text-center">
+              <div id="stat-daily-streak" class="text-lg font-bold text-[#eaeaea]">0</div>
+              <div class="text-xs text-gray-600 mt-0.5">Daily Streak</div>
             </div>
           </div>
         </div>
       </div>
 
       <!-- Game Screen -->
-      <div id="game-screen" style="display:none;" class="screen-fade space-y-6">
+      <div id="game-screen" style="display:none;" class="screen-fade space-y-3 lg:space-y-6">
 
         <!-- Score row -->
-        <div class="flex items-center justify-center gap-6 text-base flex-wrap">
+        <div class="flex items-center justify-center gap-2 sm:gap-5 text-sm sm:text-base flex-wrap">
           <div><span id="correct-count" class="font-bold text-[#40E0D0]">0</span>/<span id="total">0</span></div>
           <div id="points-container" style="display:none;"><span id="score" class="font-bold text-[#40E0D0] score-pop">0</span> pts</div>
           <div class="text-gray-500">|</div>
           <div>Best: <span id="high-score" class="font-bold">0</span></div>
           <div id="streak-container" style="display:none;">
             <span class="text-gray-500">|</span>
-            <span id="streak" class="font-bold ml-2 text-orange-400"></span>
+            <span id="streak" class="font-bold ml-1 text-orange-400"></span>
           </div>
           <div id="multiplier-container" style="display:none;">
             <span id="multiplier" class="font-bold text-yellow-400"></span>
           </div>
           <div id="timer-container" style="display: none;">
             <span class="text-gray-500">|</span>
-            <span id="timer" class="font-bold ml-2">60s</span>
+            <span id="timer" class="font-bold ml-1">60s</span>
           </div>
         </div>
 
@@ -325,18 +333,18 @@
         </div>
 
         <!-- Feedback (above image so it's always visible) -->
-        <div id="feedback" class="text-2xl md:text-3xl font-semibold min-h-[2.5rem] py-2"></div>
+        <div id="feedback" class="text-xl md:text-3xl font-semibold min-h-[2rem] py-1"></div>
 
         <!-- Aircraft image -->
-        <div class="bg-white rounded shadow-md p-4">
-          <img id="aircraft-img" src="" alt="Aircraft" class="mx-auto max-h-[350px] lg:max-h-[500px] w-auto rounded" />
+        <div class="bg-white rounded shadow-md p-3">
+          <img id="aircraft-img" src="" alt="Aircraft" class="mx-auto max-h-[200px] sm:max-h-[300px] lg:max-h-[500px] w-auto rounded" />
         </div>
 
         <!-- Choices -->
-        <div id="choices" class="grid grid-cols-2 gap-3 md:gap-4 text-lg"></div>
+        <div id="choices" class="grid grid-cols-2 gap-2 md:gap-4 text-base lg:text-lg"></div>
 
         <!-- Restart -->
-        <div class="pt-4">
+        <div class="pt-1">
           <button onclick="resetGame()" class="text-base">Restart</button>
         </div>
       </div>
