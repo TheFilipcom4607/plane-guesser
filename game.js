@@ -448,21 +448,43 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  // Shuffle then spread: ensure same manufacturer doesn't appear within SPREAD positions
+  // Build a shuffled deck where the same manufacturer never appears back-to-back.
+  // Groups aircraft by manufacturer, shuffles each group, then uses weighted
+  // random selection — always picking from a different manufacturer than the last,
+  // proportional to how many of that manufacturer remain (so share is preserved).
   function buildShuffledDeck(aircraft) {
-    const deck = [...aircraft];
-    shuffleArray(deck);
-    const SPREAD = 3;
-    for (let i = 1; i < deck.length; i++) {
-      const recentMfrs = new Set(
-        deck.slice(Math.max(0, i - SPREAD), i).map(a => a.manufacturer)
-      );
-      if (recentMfrs.has(deck[i].manufacturer)) {
-        const swapIdx = deck.findIndex((a, j) => j > i && !recentMfrs.has(a.manufacturer));
-        if (swapIdx !== -1) [deck[i], deck[swapIdx]] = [deck[swapIdx], deck[i]];
-      }
+    const groups = {};
+    for (const ac of aircraft) {
+      if (!groups[ac.manufacturer]) groups[ac.manufacturer] = [];
+      groups[ac.manufacturer].push(ac);
     }
-    return deck;
+    for (const mfr in groups) shuffleArray(groups[mfr]);
+
+    const result = [];
+    let lastMfr = null;
+
+    while (true) {
+      const piles = Object.values(groups).filter(p => p.length > 0);
+      if (piles.length === 0) break;
+
+      // Prefer different manufacturer than last; fall back to same if no choice
+      const available = piles.filter(p => p[0].manufacturer !== lastMfr);
+      const pool = available.length > 0 ? available : piles;
+
+      // Weighted random: larger piles are proportionally more likely
+      const total = pool.reduce((s, p) => s + p.length, 0);
+      let r = Math.random() * total;
+      let chosen = pool[pool.length - 1];
+      for (const pile of pool) {
+        r -= pile.length;
+        if (r <= 0) { chosen = pile; break; }
+      }
+
+      const ac = chosen.shift();
+      result.push(ac);
+      lastMfr = ac.manufacturer;
+    }
+    return result;
   }
 
   // --- Seeded PRNG (for daily challenge) ---
