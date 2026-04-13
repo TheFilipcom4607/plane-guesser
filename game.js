@@ -2,15 +2,13 @@ document.addEventListener("DOMContentLoaded", () => {
   let data = [];
   let activeData = [];
   let currentAircraft;
-  let lastAircraft;
   let difficulty;
   let mode;
   let score = 0;
   let total = 0;
   let highScore = 0;
   let usedAircraft = [];
-  let recentFamilies = [];
-  const MAX_RECENT_FAMILIES = 5;
+  let aircraftQueue = [];
   let timerInterval;
   let timeLeft = 60;
   let gameOver = false;
@@ -205,7 +203,7 @@ document.addEventListener("DOMContentLoaded", () => {
     sessionBestStreak = 0;
     multiplier = 1;
     usedAircraft = [];
-    recentFamilies = [];
+    aircraftQueue = buildShuffledDeck(activeData);
     gameOver = false;
     updateScore();
     updateStreak();
@@ -261,7 +259,7 @@ document.addEventListener("DOMContentLoaded", () => {
     feedback.innerText = "";
     feedback.classList.remove("text-3xl");
 
-    if (usedAircraft.length === activeData.length) {
+    if (aircraftQueue.length === 0) {
       if (isDaily) {
         endDailyGame();
       } else {
@@ -273,22 +271,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    let attempts = 0;
-    do {
-      currentAircraft = activeData[Math.floor(Math.random() * activeData.length)];
-      attempts++;
-      if (attempts > 100) break;
-    } while (
-      currentAircraft === lastAircraft ||
-      usedAircraft.includes(currentAircraft.model) ||
-      recentFamilies.includes(currentAircraft.family)
-    );
-
-    lastAircraft = currentAircraft;
+    currentAircraft = aircraftQueue.shift();
     usedAircraft.push(currentAircraft.model);
-
-    recentFamilies.push(currentAircraft.family);
-    if (recentFamilies.length > MAX_RECENT_FAMILIES) recentFamilies.shift();
 
     const imageUrl = `${currentAircraft.image}?t=${Date.now()}`;
     const oldImg = document.getElementById("aircraft-img");
@@ -464,6 +448,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Shuffle then spread: ensure same manufacturer doesn't appear within SPREAD positions
+  function buildShuffledDeck(aircraft) {
+    const deck = [...aircraft];
+    shuffleArray(deck);
+    const SPREAD = 3;
+    for (let i = 1; i < deck.length; i++) {
+      const recentMfrs = new Set(
+        deck.slice(Math.max(0, i - SPREAD), i).map(a => a.manufacturer)
+      );
+      if (recentMfrs.has(deck[i].manufacturer)) {
+        const swapIdx = deck.findIndex((a, j) => j > i && !recentMfrs.has(a.manufacturer));
+        if (swapIdx !== -1) [deck[i], deck[swapIdx]] = [deck[swapIdx], deck[i]];
+      }
+    }
+    return deck;
+  }
+
   // --- Seeded PRNG (for daily challenge) ---
   function mulberry32(a) {
     return function () {
@@ -626,7 +627,7 @@ document.addEventListener("DOMContentLoaded", () => {
     sessionBestStreak = 0;
     multiplier = 1;
     usedAircraft = [];
-    recentFamilies = [];
+    aircraftQueue = activeData.slice(); // daily uses seeded order as-is
     gameOver = false;
     updateScore();
     updateStreak();
