@@ -20,8 +20,11 @@ You're shown a side-view illustration of an aircraft and pick the correct answer
 
 ## Game Modes
 
-- **Normal** — No time pressure, work through the full aircraft set
+- **Daily Challenge** — 10 planes, same for everyone every day. Build a daily streak and share your result
+- **Endless** — No time pressure, work through the full aircraft set
 - **Timed** — Pick a time limit (15s–90s) and score as many as you can. Streaks give score multipliers
+
+Or jump in with a one-click preset: **Quick Play**, **Hardcore**, or **Manufacturers**. Open *Custom Setup* for full control.
 
 ## Filters
 
@@ -39,8 +42,10 @@ Includes everything from the DC-3 and Concorde to the 777-9 and A330-900neo.
 
 ## Features
 
+- Daily Challenge with shareable results and a daily streak
+- One-click presets (Quick Play / Hardcore / Manufacturers) plus full custom setup
 - Streak counter and score multipliers in timed mode
-- Lifetime stats (games played, accuracy, best streak)
+- Lifetime stats (games played, accuracy, best streak, daily streak)
 - Keyboard shortcuts (1–4 to quick-answer)
 - Mobile-friendly responsive layout
 - Dark theme

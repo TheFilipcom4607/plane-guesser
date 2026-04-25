@@ -406,6 +406,10 @@
     .custom-setup[open] > summary::after { content: " \025B4"; }
     .custom-setup > summary:hover { color: #eaeaea; }
 
+    /* When custom setup is open, hide presets + divider so the page stays compact */
+    #start-screen:has(#custom-setup[open]) .play-divider,
+    #start-screen:has(#custom-setup[open]) .presets-block { display: none !important; }
+
     /* Sound toggle — corner button */
     #sound-toggle-btn {
       position: fixed !important;
@@ -515,10 +519,10 @@
           </button>
         </div>
 
-        <div class="text-[0.65rem] uppercase tracking-[0.22em] text-gray-600">— or play freely —</div>
+        <div class="play-divider text-[0.65rem] uppercase tracking-[0.22em] text-gray-600">— or play freely —</div>
 
         <!-- Presets -->
-        <div class="max-w-lg mx-auto grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <div class="presets-block max-w-lg mx-auto grid grid-cols-1 sm:grid-cols-3 gap-2">
           <button type="button" class="preset-card preset-btn" data-preset="quick" disabled>
             <div class="preset-title">Quick Play</div>
             <div class="preset-sub">Family · Timed 30s · Passenger</div>
