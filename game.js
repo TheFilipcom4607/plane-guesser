@@ -51,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function updateSettingsGrid() {
     const grid = document.getElementById("settings-grid");
+    if (!grid) return;
     const items = grid.children;
     for (const item of items) {
       item.style.gridColumn = "";
@@ -69,7 +70,10 @@ document.addEventListener("DOMContentLoaded", () => {
   difficultySelect.addEventListener("change", () => {
     if (difficultySelect.value === "easy") {
       filterWrapper.style.display = "none";
-      filterSelect.value = "all";
+      if (filterSelect.value !== "all") {
+        filterSelect.value = "all";
+        filterSelect.dispatchEvent(new Event("change", { bubbles: true }));
+      }
     } else {
       filterWrapper.style.display = "";
     }
@@ -88,11 +92,11 @@ document.addEventListener("DOMContentLoaded", () => {
   if (window.SoundManager) {
     SoundManager.init();
     const soundBtn = document.getElementById("sound-toggle-btn");
-    soundBtn.textContent = SoundManager.isEnabled() ? "🔊" : "🔇";
+    soundBtn.dataset.sound = SoundManager.isEnabled() ? "on" : "off";
     soundBtn.addEventListener("click", () => {
       const next = !SoundManager.isEnabled();
       SoundManager.setEnabled(next);
-      soundBtn.textContent = next ? "🔊" : "🔇";
+      soundBtn.dataset.sound = next ? "on" : "off";
     });
   }
 
@@ -103,10 +107,41 @@ document.addEventListener("DOMContentLoaded", () => {
     .then(json => {
       data = json;
       document.querySelector('button[onclick="startGame()"]')?.removeAttribute("disabled");
-      document.getElementById("daily-btn")?.removeAttribute("disabled");
-      updateDailyButton();
+      document.getElementById("daily-card")?.removeAttribute("disabled");
+      document.querySelectorAll(".preset-btn").forEach(b => b.removeAttribute("disabled"));
+      updateDailyCard();
     })
     .catch(error => console.error("Error loading JSON:", error));
+
+  // Preset configurations
+  const presets = {
+    quick:         { difficulty: "normal", mode: "timed",  time: "30", filter: "passenger" },
+    hardcore:      { difficulty: "hard",   mode: "normal", time: "30", filter: "all" },
+    manufacturers: { difficulty: "easy",   mode: "normal", time: "30", filter: "all" }
+  };
+
+  function applyPreset(name) {
+    const p = presets[name];
+    if (!p) return;
+    const set = (id, val) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.value = val;
+      el.dispatchEvent(new Event("change", { bubbles: true }));
+    };
+    set("difficulty-select", p.difficulty);
+    set("mode-select", p.mode);
+    set("time-select", p.time);
+    set("filter-select", p.filter);
+  }
+
+  document.querySelectorAll(".preset-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (btn.disabled) return;
+      applyPreset(btn.dataset.preset);
+      startGame();
+    });
+  });
 
   // --- Multiplier tiers ---
   function getMultiplier(s) {
@@ -436,9 +471,8 @@ document.addEventListener("DOMContentLoaded", () => {
     gameOver = false;
     isDaily = false;
     dailyAnswers = [];
-    document.getElementById("settings-grid").style.display = "";
     updateSettingsGrid();
-    updateDailyButton();
+    updateDailyCard();
   };
 
   function shuffleArray(array) {
@@ -530,15 +564,23 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // --- Daily challenge functions ---
-  function updateDailyButton() {
-    const btn = document.getElementById("daily-btn");
-    if (!btn) return;
+  function updateDailyCard() {
+    const dayEl = document.getElementById("daily-card-day");
+    const statusEl = document.getElementById("daily-card-status");
+    const streakEl = document.getElementById("daily-card-streak");
+    if (!dayEl) return;
+
+    dayEl.innerText = "#" + getDailyNumber();
+
     const saved = JSON.parse(localStorage.getItem("planeguessrDaily") || "null");
     if (saved && saved.date === getTodayString() && saved.completed) {
-      btn.innerText = "Daily \u2014 Completed \u2713";
+      statusEl.innerText = `Completed \u2713  ${saved.correctCount}/10  \u2014 tap to view`;
     } else {
-      btn.innerText = "Daily Challenge";
+      statusEl.innerText = "10 planes \u2014 same for everyone today";
     }
+
+    const sd = JSON.parse(localStorage.getItem("planeguessrDailyStreak") || '{"current":0}');
+    streakEl.innerText = sd.current > 0 ? `\u{1F525} ${sd.current}-day streak` : "";
   }
 
   function updateDailyStreak(today) {
@@ -620,9 +662,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     isDaily = true;
     dailyAnswers = [];
-
-    // Hide settings grid during daily
-    document.getElementById("settings-grid").style.display = "none";
 
     // Switch screens
     document.getElementById("start-screen").style.display = "none";
