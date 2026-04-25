@@ -38,7 +38,7 @@
       }
     }
 
-    /* Buttons — !important to beat Tailwind preflight */
+    /* Buttons - !important to beat Tailwind preflight */
     button {
       font-family: inherit !important;
       background: #121212 !important;
@@ -185,7 +185,7 @@
       color: #121212 !important;
     }
 
-    /* Primary start button — filled teal accent */
+    /* Primary start button - filled teal accent */
     #start-btn {
       background: #40E0D0 !important;
       color: #0a0a0a !important;
@@ -239,7 +239,7 @@
       margin-bottom: 0.5rem;
     }
 
-    /* Pill groups — segmented controls */
+    /* Pill groups - segmented controls */
     .pill-group {
       display: flex;
       flex-wrap: wrap;
@@ -317,7 +317,7 @@
       color: transparent;
     }
 
-    /* Section divider — extra-light */
+    /* Section divider - extra-light */
     .soft-divider {
       height: 1px;
       background: linear-gradient(90deg, transparent, #2a2a2a 30%, #2a2a2a 70%, transparent);
@@ -413,7 +413,7 @@
     #start-screen:has(#custom-setup[open]) .play-divider,
     #start-screen:has(#custom-setup[open]) .presets-block { display: none !important; }
 
-    /* Sound toggle — corner button */
+    /* Sound toggle - corner button */
     #sound-toggle-btn {
       position: fixed !important;
       top: 1rem !important;
@@ -477,7 +477,7 @@
           <p class="text-sm text-gray-500">Test your aircraft recognition skills</p>
         </div>
 
-        <!-- Hidden selects — source of truth for game.js -->
+        <!-- Hidden selects - source of truth for game.js -->
         <select id="difficulty-select" class="sr-only" aria-hidden="true" tabindex="-1">
           <option value="easy">Manufacturer</option>
           <option value="normal" selected>Family</option>
@@ -515,14 +515,14 @@
                 <div id="daily-card-status" class="daily-card-status">10 planes, same for everyone today</div>
               </div>
               <div class="daily-card-meta">
-                <div id="daily-card-day" class="daily-card-day">—</div>
+                <div id="daily-card-day" class="daily-card-day">·</div>
                 <div id="daily-card-streak" class="daily-card-streak"></div>
               </div>
             </div>
           </button>
         </div>
 
-        <div class="play-divider text-[0.65rem] uppercase tracking-[0.22em] text-gray-600">— or play freely —</div>
+        <div class="play-divider text-[0.65rem] uppercase tracking-[0.22em] text-gray-600">or play freely</div>
 
         <!-- Presets -->
         <div class="presets-block max-w-lg mx-auto grid grid-cols-1 sm:grid-cols-3 gap-2">
@@ -606,7 +606,7 @@
               <div class="text-[0.65rem] uppercase tracking-wider text-gray-500 mt-0.5">Games</div>
             </div>
             <div class="stat-card bg-[#141414] rounded-lg py-2.5 px-1 text-center">
-              <div id="stat-accuracy" class="stat-value text-xl font-bold">—</div>
+              <div id="stat-accuracy" class="stat-value text-xl font-bold">·</div>
               <div class="text-[0.65rem] uppercase tracking-wider text-gray-500 mt-0.5">Accuracy</div>
             </div>
             <div class="stat-card bg-[#141414] rounded-lg py-2.5 px-1 text-center">
@@ -716,6 +716,6 @@
     })();
   </script>
   <script src="sounds.js"></script>
-  <script src="game.js?v=7"></script>
+  <script src="game.js?v=8"></script>
 </body>
 </html>

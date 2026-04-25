@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
   updateSettingsGrid();
 
-  // Initialize sound — corner toggle button
+  // Initialize sound - corner toggle button
   if (window.SoundManager) {
     SoundManager.init();
     const soundBtn = document.getElementById("sound-toggle-btn");
@@ -181,7 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const pct = Math.round((lifeStats.totalCorrect / lifeStats.totalAnswered) * 100);
       document.getElementById("stat-accuracy").innerText = pct + "%";
     } else {
-      document.getElementById("stat-accuracy").innerText = "\u2014";
+      document.getElementById("stat-accuracy").innerText = "\u00b7";
     }
     const streakData = JSON.parse(localStorage.getItem("planeguessrDailyStreak") || '{"current":0}');
     document.getElementById("stat-daily-streak").innerText = streakData.current;
@@ -282,7 +282,7 @@ document.addEventListener("DOMContentLoaded", () => {
       SoundManager.play(total > 0 && correctCount / total >= 0.7 ? "gameEndGood" : "gameEndBad");
     }
     const feedback = document.getElementById("feedback");
-    feedback.innerText = `Time's up! ${correctCount}/${total} correct — ${score} pts`;
+    feedback.innerText = `Time's up! ${correctCount}/${total} correct (${score} pts)`;
     feedback.classList.add("text-3xl");
     document.querySelectorAll(".choice-btn").forEach(btn => btn.disabled = true);
   }
@@ -450,7 +450,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   window.resetGame = function () {
     if (isDaily && total > 0 && !gameOver) {
-      // Abandoning daily — fill remaining as wrong, save as completed
+      // Abandoning daily - fill remaining as wrong, save as completed
       while (dailyAnswers.length < 10) dailyAnswers.push(false);
       const today = getTodayString();
       localStorage.setItem("planeguessrDaily", JSON.stringify({
@@ -484,7 +484,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Build a shuffled deck where the same manufacturer never appears back-to-back.
   // Groups aircraft by manufacturer, shuffles each group, then uses weighted
-  // random selection — always picking from a different manufacturer than the last,
+  // random selection - always picking from a different manufacturer than the last,
   // proportional to how many of that manufacturer remain (so share is preserved).
   function buildShuffledDeck(aircraft) {
     const groups = {};
@@ -574,9 +574,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const saved = JSON.parse(localStorage.getItem("planeguessrDaily") || "null");
     if (saved && saved.date === getTodayString() && saved.completed) {
-      statusEl.innerText = `Completed \u2713  ${saved.correctCount}/10  \u2014 tap to view`;
+      statusEl.innerText = `Completed \u2713  ${saved.correctCount}/10  \u00b7 tap to view`;
     } else {
-      statusEl.innerText = "10 planes \u2014 same for everyone today";
+      statusEl.innerText = "10 planes, same for everyone today";
     }
 
     const sd = JSON.parse(localStorage.getItem("planeguessrDailyStreak") || '{"current":0}');
@@ -615,7 +615,7 @@ document.addEventListener("DOMContentLoaded", () => {
     feedback.classList.add("text-3xl");
     feedback.innerHTML =
       `<div class="space-y-4">` +
-        `<div class="text-2xl font-bold">Daily #${dayNum} \u2014 ${state.correctCount}/10</div>` +
+        `<div class="text-2xl font-bold">Daily #${dayNum}: ${state.correctCount}/10</div>` +
         `<div class="text-3xl tracking-widest">${grid}</div>` +
         (streakData.current > 0 ? `<div class="text-sm text-orange-400">\u{1F525} ${streakData.current}-day streak</div>` : "") +
         `<button onclick="shareDaily()" id="share-btn" class="text-sm" style="padding:8px 20px !important;">Share Result</button>` +
@@ -626,7 +626,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("timer-bar-wrapper").style.display = "none";
     document.getElementById("points-container").style.display = "none";
 
-    // Hide score row content for clean look — show only feedback + restart
+    // Hide score row content for clean look - show only feedback + restart
     document.getElementById("correct-count").innerText = state.correctCount;
     document.getElementById("total").innerText = "10";
   }
@@ -680,7 +680,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Standard game init
     highScore = 0;
-    document.getElementById("high-score").innerText = "\u2014";
+    document.getElementById("high-score").innerText = "\u00b7";
     score = 0;
     total = 0;
     correctCount = 0;
