@@ -105,7 +105,12 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch("aircraft-data.json")
     .then(res => res.json())
     .then(json => {
-      data = json;
+      const required = ["manufacturer", "family", "model", "image"];
+      data = json.filter(entry => {
+        const ok = entry && required.every(k => typeof entry[k] === "string" && entry[k].length > 0);
+        if (!ok) console.warn("Skipping invalid aircraft entry:", entry);
+        return ok;
+      });
       document.querySelector('button[onclick="startGame()"]')?.removeAttribute("disabled");
       document.getElementById("daily-card")?.removeAttribute("disabled");
       document.querySelectorAll(".preset-btn").forEach(b => b.removeAttribute("disabled"));
@@ -309,15 +314,15 @@ document.addEventListener("DOMContentLoaded", () => {
     currentAircraft = aircraftQueue.shift();
     usedAircraft.push(currentAircraft.model);
 
-    const imageUrl = `${currentAircraft.image}?t=${Date.now()}`;
-    const oldImg = document.getElementById("aircraft-img");
-    const newImg = oldImg.cloneNode();
-    newImg.src = imageUrl;
-    newImg.alt = "Aircraft";
-    newImg.id = "aircraft-img";
-    newImg.className = oldImg.className.replace("loaded", "");
-    newImg.onload = () => newImg.classList.add("loaded");
-    oldImg.replaceWith(newImg);
+    const img = document.getElementById("aircraft-img");
+    img.classList.remove("loaded");
+    img.onload = () => img.classList.add("loaded");
+    img.onerror = () => {
+      console.warn("Failed to load aircraft image:", currentAircraft.image);
+      img.classList.add("loaded");
+    };
+    img.alt = "Aircraft";
+    img.src = currentAircraft.image;
 
     const correctAnswer = getCorrectAnswer();
     const answers = generateAnswers(correctAnswer);
@@ -713,13 +718,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const grid = state.answers.map(a => a ? "\u{1F7E9}" : "\u{1F7E5}").join("");
     const quip = getDailyQuip(state.correctCount);
     const text = `\u2708\uFE0F PlaneGuessr Daily #${dayNum}\n${grid} ${state.correctCount}/10\n${quip}\nplaneguessr.com`;
-    navigator.clipboard.writeText(text).then(() => {
-      const btn = document.getElementById("share-btn");
+    const btn = document.getElementById("share-btn");
+    const onSuccess = () => {
       if (btn) {
         btn.innerText = "Copied! \u2713";
         setTimeout(() => { btn.innerText = "Share Result"; }, 2000);
       }
-    });
+    };
+    const onFailure = () => {
+      if (btn) btn.innerText = "Copy failed \u2014 long-press to copy";
+      window.prompt("Copy your result:", text);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(onSuccess).catch(onFailure);
+    } else {
+      onFailure();
+    }
   };
 
   document.addEventListener("keydown", (e) => {
