@@ -79,9 +79,15 @@
       }
       main {
         min-height: 0;
-        flex: 1;
+        flex: 0 0 auto;
         padding-top: clamp(3rem, 7vh, 5.5rem);
-        padding-bottom: clamp(2.5rem, 6vh, 4rem);
+        padding-bottom: 1rem;
+      }
+      footer {
+        padding-top: 0.75rem !important;
+      }
+      footer hr {
+        margin-top: 0.75rem !important;
       }
     }
 
@@ -481,6 +487,16 @@
     }
 
     @media (max-width: 640px) {
+      main {
+        min-height: auto;
+        padding-bottom: 0.75rem;
+      }
+      footer {
+        padding-top: 0.75rem !important;
+      }
+      footer hr {
+        margin-top: 0.75rem !important;
+      }
       .daily-card {
         padding: 0.95rem 1rem !important;
       }
